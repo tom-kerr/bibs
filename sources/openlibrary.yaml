@@ -1,5 +1,5 @@
 namespace:
-  'Open Library'
+  'openlibrary'
 typelist: &types
   #about:
   author:
@@ -134,6 +134,10 @@ typelist: &types
     notes,
     cover_edition,
     covers]
+library_identifiers_upper: &libidsup
+  [ISBN, LCCN, OCLC, OLID]
+library_identifiers_lower: &libidslow
+  [isbn, lccn, oclc, olid]
 default: True
 url: http://openlibrary.org
 api: 
@@ -142,10 +146,28 @@ api:
     path: /api/books?bibkeys=
     input: 
       type: key_value
-      params: [ISBN, LCCN, OCLC, OLID]
+      params: *libidsup
       param_bind_chain: [':', ',']
       options: [format, callback, jscmd]
       option_bind_chain: ['=', '&']
+  volumes_brief: &volsbrief
+    namespace: 'volumes_brief'
+    path: /api/volumes/brief/
+    input:
+      type: key_value
+      params: *libidslow
+      param_bind_chain: ['/', '.json']
+      options: [callback]
+      option_bind_chain: ['=','?']
+  volumes_full: &volsfull
+    namespace: 'volumes_full'
+    path: /api/volumes/full/
+    input:
+      type: key_value
+      params: *libidslow
+      param_bind_chain: ['/', '.json']
+      options: [callback]
+      option_bind_chain: ['=','?']
   things: &thngs
     namespace: 'things'
     path: /api/things?query=
@@ -162,7 +184,8 @@ api:
     namespace: 'search'
     path: /search.json?
     input: 
-      type: lazy
+      type: lazy_key_value
+      params: Null
       param_bind_chain: ["q=", "&"]
       option_bind_chain: ["=", "&"]
   default: *srch
