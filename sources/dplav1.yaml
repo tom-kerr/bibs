@@ -1,29 +1,41 @@
 namespace:
   'dplav1'
-dplafields: &dfields
-  [title,
-  description,
-  subject,
-  dplaContributor,
-  creator,
-  type,
-  publisher,
-  format,
-  rights,
-  contributor,
-  spatial,
-  isPartOf,
-  before: 'temporal.before',
-  after: 'termporal.after']
-default: False
-url: http://api.dp.la/v1
+url: 
+  http://api.dp.la/v1
+
+parameters: &prms
+  fields:
+    mode: field
+    keys: 
+      [title,
+      description,
+      subject,
+      dplaContributor,
+      creator,
+      type,
+      publisher,
+      format,
+      rights,
+      contributor,
+      spatial,
+      spatial.city,
+      spatial.state,
+      spatial.iso3166-2,
+      spatial.coordinates,
+      spatial.distance,
+      isPartOf,
+      temporal.before,
+      temporal.after]
+
 api:
   items: &itms
     namespace: 'item'
     path: /items?
     input:
-      type: lazy_key_value
-      params: *dfields
-      param_bind_chain: ["q=", "&"]
+      type: key_value
+      params: *prms
+      options: [page, page_size]
+      param_bind_chain: ["=", "&"]
       option_bind_chain: ["=", "&"]
+      lazy_key: 'q'
   default: *itms

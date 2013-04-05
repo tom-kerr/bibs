@@ -1,0 +1,56 @@
+namespace:
+  'hathitrust'
+url:
+  http://catalog.hathitrust.org
+
+parameters:  
+  library_identifiers_lower: &libidslow
+    mode: field
+    keys: [isbn, lccn, oclc, olid]
+
+api:
+  volumes_brief: &volsbrief
+    namespace: 'volumes_brief'
+    path: /api/volumes/brief/
+    input:
+      type: key_value
+      params: *libidslow
+      options: [callback]
+      param_bind_chain: ['/', '.json']
+      option_bind_chain: ['=','?']
+
+  multi_volumes_brief: &multivolsbrief
+    namespace: 'multi_volumes_brief'
+    path: /api/volumes/brief/json/
+    input:
+      type: key_value
+      params: *libidslow
+      options: [callback]
+      multi_value: True
+      param_bind_chain: [':', ';']
+      option_bind_chain: ['=','?']
+      multi_bind_chain: ['|', '|']
+
+  volumes_full: &volsfull
+    namespace: 'volumes_full'
+    path: /api/volumes/full/
+    input:
+      type: key_value
+      params: *libidslow
+      options: [callback]
+      param_bind_chain: ['/', '.json']
+      option_bind_chain: ['=','?']
+
+  multi_volumes_full: &multivolsfull
+    namespace: 'multi_volumes_full'
+    path: /api/volumes/full/json/
+    input:
+      type: key_value
+      params: *libidslow
+      options: [callback]
+      multi_value: True
+      param_bind_chain: [':', ';']
+      option_bind_chain: ['=','?']
+      multi_bind_chain: ['|', '|']
+
+  default: *volsbrief

@@ -1,0 +1,200 @@
+namespace:
+  'bhlv2'
+url:
+  http://biodiversitylibrary.org/api2
+parameters: &prms
+
+  fields:
+    mode: field
+    keys: [apikey, ]
+
+  identifiers_1: &ids1
+    mode: field
+    keys: [barcode, ia]
+
+  identifiers_2: &ids2
+    mode: field
+    keys: [doi, oclc, issn, isbn, lccn, ddc, nal, nlm, coden]
+      
+  methods:
+    mode: prototype
+    key: {'op': ''}
+
+    AuthorSearch:
+      parameters:
+        name: ' '
+
+    BookSearch:
+      parameters:
+        title: ' '
+        lname: ' '
+        volume: ' '
+        edition: ' '
+        year: ' '
+        subject: ' '
+        language: ' '
+        colectionid: ' '
+        
+    GetAuthorParts:
+      parameters:
+        creatorid: ' '
+
+    GetAuthorTitles:
+      parameters:
+        creatorid: ' '
+
+    GetCollections: 
+      parameters: Null
+    
+    GetItemByIdentifier:
+      parameters:
+        type: *ids1
+        value: ' '
+
+    GetItemMetadata:
+      parameters:
+        itemid: ' '
+        pages: ' '
+        ocr: ' '
+        parts: ' '
+
+    GetItemPages:
+      parameters:
+        itemid: ' '
+        ocr: ' '
+
+    GetItemParts:
+      itemid: ' '
+
+    GetLanguages:
+      parameters: Null
+    
+    GetPageMetadata:
+      parameters:
+        pageid: ' '
+        ocr: ' '
+        names: ' '
+
+    GetPageNames:
+      parameters:
+        pageid: ' '
+
+    GetPageOcrText:
+      parameters:
+        pageid: ' '
+
+    GetPartBibTeX:
+      parameters:
+        partid: ' '
+
+    GetPartByIdentifier:
+      parameters:
+        type: *ids2
+        value: ' '
+
+    GetPartEndNote:
+      parameters:
+        partid: ' '
+
+    GetPartMetadata:
+      parameters:
+        partid: ' '
+
+    GetPartNames:
+      parameters:
+        partid: ' '
+
+    GetSubjectParts:
+      parameters:
+        subject: ' '
+
+    GetSubjectTitles:
+      parameters:
+        subject: ' '
+
+    GetTitleBibTex:
+      parameters:
+        titleid: ' '
+        
+    GetTitleByIdentifier:
+      parameters:
+        type: *ids2
+        value: ' '
+
+    GetTitleEndNote:
+      parameters:
+        titleid: ' '
+
+    GetTitleItems:
+      parameters:
+        titleid: ' '
+
+    GetTitleMetadata:
+      parameters:
+        titleid: ' '
+        items: ' '
+
+    GetUnpublishedItems:
+      parameters: Null
+        
+    GetUnpublishedParts:
+      parameters: Null
+        
+    GetUnpublishedTitles:
+      parameters: Null
+
+    NameCount:
+      parameters:
+        startdate: ' '
+        enddate: ' '
+
+    #NameCountBetweenDates:
+    #  parameters:
+        
+    #NameGetDetailForName:
+    #  parameters:
+
+    #NameGetDetailForNameBankID:
+    #  parameters:
+
+    NameList:
+      parameters:
+        startrow: ' '
+        batchsize: ' '
+        startdate: ' '
+        enddate: ' '
+
+    #NameListBetweenDates:
+    #  parameters:
+
+    NameSearch:
+      parameters:
+        name: ' '
+
+    PartSearch:
+      parameters:
+        title: ' ' 
+        author: ' '
+        date: ' '
+        volume: ' '
+        series: ' '
+        issue: ' '
+
+    SubjectSearch:
+      parameters:
+        subject: ' '
+
+    TitleSearchSimple:
+      parameters:
+        title: ' '
+
+api:
+  query: &qry
+    path: /httpquery.ashx?
+    input:
+      type: key_value
+      params: *prms
+      options: [format, callback]
+      param_bind_chain: ['=', '&']
+      option_bind_chain: ['=', '&']
+  default: *qry

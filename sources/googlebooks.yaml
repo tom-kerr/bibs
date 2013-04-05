@@ -1,0 +1,20 @@
+namespace:
+  'googlebooks'
+url:
+  http://books.google.com
+
+parameters:
+  library_identifiers_upper: &libidsup
+    mode: field
+    keys: [ISBN, LCCN, OCLC, OLID]
+
+api:
+  books: &bks
+    path: /books?bibkeys=
+    input:
+      type: key_value
+      params: *libidsup
+      options: [callback, jscmd]
+      param_bind_chain: [':', ',']
+      option_bind_chain: ['=', '&']
+  default: *bks

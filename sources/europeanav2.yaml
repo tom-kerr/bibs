@@ -1,0 +1,21 @@
+namespace:
+  'europeanav2'
+url:
+  http://preview.europeana.eu/api/v2
+
+parameters: &prms
+  fields:
+    mode: field
+    keys: [wskey, query]
+
+api:
+  search: &srch
+    path: /search.json?
+    input:
+      type: key_value
+      params: *prms
+      options: [callback, profile, qf, rows, start]
+      param_bind_chain: ['=', '&']
+      option_bind_chain: ['=', '&']
+      q_key: 'query'
+  default: *srch
