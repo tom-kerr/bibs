@@ -14,7 +14,7 @@ A python module with the goal of a shared syntax for querying public Bibliograph
 	b = Bibs()
 	results = b.search("title->Tom Sawyer", 'dplav1', 'items')
 
-where **title->Tom Sawyer** is the *query*, **dplav1** is the bibliographic *source*, and **search** is the *api*.
+where **title->Tom Sawyer** is the *query*, **dplav1** is the bibliographic *source*, and **items** is the *api*.
 
 
 Query
