@@ -27,12 +27,17 @@ Queries are composed of one or more key/value pairs. Keys and their values are t
 Multiple values may be indicated by an '|' separating the values, like:
 
 	 b.search('types->edition:subjects->war|peace', 'openlibrary', 'query')
+
 Or,
+
 	 b.search('oclc->424023|isbn->0030110408', 'hathitrust', 'multi_volumes_full')
 
 
 Source
 -----
+
+Each source is modeled in YAML, providing the information necessary to parse queries and the documentation to form queries. 
+
 
 Currently supported Sources:
 
@@ -41,7 +46,7 @@ Currently supported Sources:
 - hathitrust  (<a href='http://hathitrust.org'>Hathi Trust</a>)
 - openlibrary (<a href='http://openlibrary.org'>Open Library</a>)
 - europeana   (<a href='http://europeana.eu'>Europeana</a>)
-- googlebooks (<a href='http://books.google.com'>Google Books</a>
+- googlebooks (<a href='http://books.google.com'>Google Books</a>)
 
 
 Api
