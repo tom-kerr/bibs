@@ -1,23 +1,35 @@
 bibs
 ====
 Bibliographic Search
+------------
 
 A python module with the goal of a shared syntax for querying public Bibliographic APIs and a simple and flexible extension model.
 
 (in development)
 
-Example:
+<h2>Example</h2>
 
-from bibs import Bibs
+	from bibs import Bibs
 
-b = Bibs()
-         #query				#source       #api
-b.search("OCLC:424023|ISBN:0030110408", 'hathitrust', 'multi_volumes_full')
+	b = Bibs()
+	results = b.search("title->Tom Sawyer", 'openlibrary', 'search')
 
-b.search("OCLC:424023|ISBN:0030110408", 'openlibrary', 'multi_volumes_full')
+where **title->Tom Sawyer** is the *query*, **openlibrary** is the bibliographic *source*, and **search** is the *api*.
 
-b.search("title:Tom Sawyer", 'openlibrary', 'search')
 
-b.search("title:Tom Sawyer", 'dplav1', 'items')
+Query
+-----
 
-b.search("wskey:xxxxxxx:q:Tom Sawyer", 'europeanav2', 'search')
+Queries are composed of one or more key/value pairs. Keys and their values are to be separated by an '->', while each pair is separated by an ':'. Key/values may also be nested. For instance, to search Open Library's "query" api for all editions that contain a Title of Contents with an entry for page 19:
+
+	b.search("types->edition:table_of_contents->pagenum->19", 'openlibrary', 'query') 
+
+
+Source
+-----
+
+
+
+
+Api
+---
