@@ -4,6 +4,7 @@ import urllib2, urllib
 import yaml, json
 import re
 import copy
+import pprint
 
 class Bibs(object):
 
@@ -43,11 +44,12 @@ class Bibs(object):
 
         query_object = self.create_query_object(input_string, search_source, api)
         query_object.parse_input_elements()
+        query_object.parse_input_options()
         query_object.build_string()
-
+        #return
         request = urllib2.urlopen(query_object.query_string)
         results = request.read()
-        #return json.loads(results)
+        #pprint.pprint(json.loads(results))
         return results        
         
 
@@ -91,7 +93,10 @@ class Bibs(object):
             key = option['key']
             value = urllib2.quote(option['value'])
             if self.parse_type == 'json':
-                option['string'] += ",\""+key+"\":\""+value+"\""
+                if value == 'null':
+                    option['string'] += ",\""+key+"\":"+value+""
+                else:
+                    option['string'] += ",\""+key+"\":\""+value+"\""
             else:
                 option['string'] += key + self.option_bind_char + value
 
@@ -128,7 +133,6 @@ class Bibs(object):
         #print '\n' + self.query_string + '\n'
         
 
-
     def assign_list_params(self, param_list, value):
         if len(param_list) == 1:
             prefix = param_list.pop()
@@ -158,6 +162,8 @@ class Bibs(object):
 
 
     def parse_prototype(self, arg, value):
+        if 'parameters' not in self.prototype:
+            raise Exception('Invalid prototype \''+self.prototype+'\'')
         path, entry = self.find_param(arg, self.prototype['parameters'])
         if entry is None:
             raise Exception('Invalid parameter \''+str(arg)+'\'')
@@ -191,14 +197,24 @@ class Bibs(object):
             self.query_elements['args'].append({'key': key, 
                                                 'value': value})
 
+    def parse_input_options(self):
+        self.query_elements['options'] = []
+        for elements in self.input_options:
+            arg = elements[:-1]
+            value = [elements[-1],][0]
+            path, entry = self.find_param(arg, self.options)            
+            if not entry:
+                    raise Exception('Invalid parameter \''+str(arg)+'\'')                
+            self.query_elements['options'].append({'key': entry, 'value': value})
+
+
     def parse_input_elements(self):
         self.query_elements['args'] = []
-        self.query_elements['options'] = []
         for elements in self.input_elements:
 
             arg = elements[:-1]
             value = [elements[-1],][0]
-
+            
             if len(arg) == 1 and arg[0] == '' and self.lazy_key is not None:
                 self.query_elements['args'].append({'key': self.lazy_key,
                                                     'value': value})
@@ -208,14 +224,10 @@ class Bibs(object):
                 self.parse_prototype(arg, value)
             else:
                 path, entry = self.find_param(arg, self.params)            
+                root = path[0]                
 
                 if not entry:
                     raise Exception('Invalid parameter \''+str(arg)+'\'')                
-
-                root = path[0]                
-                if root == 'options':
-                    self.query_elements['options'].append({'key': entry, 'value': value})
-                    continue
                 
                 if 'mode' in self.params[root]:
                     mode = self.params[root]['mode']
@@ -242,7 +254,7 @@ class Bibs(object):
                    
                     self.query_elements['prototype'] = {'key': key, 
                                                         'value': proto_param}           
-        #print '\n' + str(self.query_elements)
+        ##print '\n' + str(self.query_elements)
         
     
     def find_param(self, args, params):        
@@ -251,6 +263,7 @@ class Bibs(object):
         path = []
         entry = None
         for arg in args:
+            arg = re.escape(arg)
             entry = self.search_entries(arg, params)
             if entry:
                 if type(entry) == list:
@@ -259,14 +272,9 @@ class Bibs(object):
                         p = [p]
                     if p not in path:
                         path = p
-                    entry = entry[0]
+                    entry = entry[0]                    
         if entry is not None:
             return [path, entry]
-        elif self.options is not None:
-            for arg in args:
-                match = self.find_list_entry(arg, self.options)
-                if match:
-                    return [['options',], match]
         return [None, None]
 
 
@@ -283,10 +291,12 @@ class Bibs(object):
 
     def find_dict_entry(self, arg, params):
         for param, entry in params.items():
+            #print arg, param
             match = re.match('^(?i)'+arg+'$', param)
             if match:
                 path = param
                 return [path, entry]        
+    
         if not match:
             for param, entry in params.items():
                 match = self.search_entries(arg, entry)
@@ -302,6 +312,7 @@ class Bibs(object):
 
     def find_list_entry(self, arg, params):
         for param in params:
+            #print arg, param
             if type(param) == dict:
                 match = self.find_dict_entry(arg, param)        
                 if match:
@@ -352,6 +363,7 @@ class Bibs(object):
         query_object.prototype = None
         query_object.input_string = input_string
         query_object.input_elements = []
+        query_object.input_options = []
         query_object.query_string = ''
         query_object.query_elements = {}
         query_object.params = source['api'][api]['input']['params']
@@ -391,23 +403,39 @@ class Bibs(object):
 
 
     def split_and_strip(self, string):
-        elements = string.split(':')
+        elements = re.split('(?<!\\\\):', string)
         new_elements = []
         for num, element in enumerate(elements):
+            element = re.sub('\\\\:', ':', element)
+            element = re.sub('\\\\@', '@', element)
             new_elements.append(element.lstrip(' ').rstrip(' ').split('->'))
         return new_elements
 
 
     def format_input_string(self):
+        input_elements = input_options = None
+        elements = re.split('(?<!\\\\)@', self.input_string)        
+        if len(elements) == 2:
+            input_elements, input_options = elements
+        elif len(elements) == 1:
+            input_elements = elements[0]
+        else:
+            raise Exception('Invalid use of \'@\'')
+        self.input_elements = self.lex(input_elements)
+        
+        if input_options:
+            self.input_options = self.lex(input_options)
+
+
+    def lex(self, string):
         if self.multi_value:
             bind = self.multi_bind_char
-            elements = self.input_string.split(bind)
+            elements = string.split(bind)
             for num, element in enumerate(elements):
                 elements[num] = self.split_and_strip(element)[0]
-            self.input_elements = elements
         else:
-            self.input_elements = self.split_and_strip(self.input_string)
-
+            elements = self.split_and_strip(string)
+        return elements
 
 
     

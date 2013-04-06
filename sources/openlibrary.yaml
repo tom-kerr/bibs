@@ -7,10 +7,98 @@ parameters: &prms
   fields: &flds
     mode: field
     keys: 
-      [title, 
-      author, 
+      [
+      #IDENTIFICATION
+      id,
+      key,
+      identifiers,
+      classifications,
+      lc_classifications,
+      ia_box_id,
+      ia_loaded_id,
+      ocaid,
+      isbn_13,
+      isbn_10,
+      lccn,
+      oclc_numbers,
+      dewey_decimal_class,
+      
+      #TYPES
+      type,
+      works,
+      editions,
+      authors,
+
+      #PERSONS
+      author,       
+      name,
+      personal_name,
+      alternate_names,
+      bio,
+      birth_date,
+      death_date,
+      contributions,
+
+      #TITLES
+      title, 
+      full_title,
+      subtitle,
+
+      #TEXT
+      by_statement,
+      excerpts,
+      covers,
+      first_sentence,
+      notes,
+      table_of_contents,
+      pagination,
+
+      #DESCRIPTION
+      description,
+      edition_name,
+      
+      #LANGUAGE
+      languages,
+
+      #SERIES
+      series,
+
+      #REFERENCE
+      source_records,
+      marc,
+      photograph,
+      photos,
+      wikipedia,
+
+      #GENRE
+      genres,
+
+      #SUBJECTS
       subject,
-      publisher]
+      subjects,
+      subject_times,
+      subject_people,
+
+      #PUBLISHING
+      publisher,
+      publish_date,
+      first_publish_date,
+      publish_country,
+      publish_places,
+
+      #TIME
+      created,
+      last_modified,
+      revision,
+      latest_revision,
+
+      #PHYSICAL
+      number_of_pages,
+      physical_dimensions,
+      physical_format,
+      weight
+      
+      ]
     
   library_identifiers_upper: &libidsup
     mode: field
@@ -138,6 +226,37 @@ parameters: &prms
         
         accompanying_material: ' '
 
+    #TODO
+    # what is this?
+    home:
+      parameters:
+        title: ' '
+        #NOT INDEXED
+        #body:
+        #news:
+        #stats:
+
+    #TODO
+    #searchable?
+    language:
+      parameters:
+        name: ' '
+        code: ' '
+        library_of_congress_name: ' '
+
+
+    library:
+      parameters:
+        #ip_ranges: ' '
+        website: ' '
+        contact_person: ' '
+        contact_email: ' '
+        country: ' '
+        #addresses: ' '
+        telephone: ' '
+
+
+
     work:
       parameters:
         title:  ' '
@@ -239,7 +358,7 @@ api:
     input:
       type: json
       params: *prms
-      options: [limit, offset]
+      options: [limit, offset, "*", *flds]
       
   search: &srch
     namespace: 'search'
