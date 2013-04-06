@@ -2,9 +2,16 @@ namespace:
   'openlibrary'
 url: 
   http://openlibrary.org
-parameters: &prms
 
-  fields: &flds
+parameters: &prms
+  searchfields: &sflds
+    mode: field
+    keys:
+      [title,
+      author,
+      subject]
+
+  metafields: &mflds
     mode: field
     keys: 
       [
@@ -256,6 +263,118 @@ parameters: &prms
         telephone: ' '
 
 
+    library_address:
+      parameters:    
+        name: ' '
+        street: ' '
+        city: ' '
+        state: ' '
+        postal_code: ' '
+        latitude: ' '
+        longitude: ' '
+        telephone: ' '
+        website: ' '
+
+    #TODO
+    #TEST
+    link:
+      parameters:
+        title: ' '
+        url: ' '
+    
+    #TODO
+    #TEST
+    list:
+      parameters:
+        name: ' '
+        #description: ' '
+        tags: []
+
+    #TODO
+    #TEST
+    macro:
+      parameters:
+        #macro:
+        description: ' '
+
+    page:
+      parameters:
+        title: ' '
+        #body: ' '
+
+    #TOTO
+    #permission:
+
+
+    #TODO
+    #searchable?
+    place:
+      parameters:        
+        name: ' '
+        latitude: ' '
+        longitude: ' '
+        zoom_level: ' '
+        kind: ' '
+        highlights: [] 
+        is_in: [] 
+        marc_names: [] 
+
+    #TODO
+    #searchable?
+    property:
+      parameters:
+        expected_type: '/type/'
+
+    #TODO
+    scan_location:
+      parameters:
+        name: ' '
+
+     
+    #series:
+    #  parameters:        
+    #    title: ' '
+    #    original_language: '/language/'
+    #    subjects: []
+    #    subject_places: []
+    #    subject_times: [] 
+    #    genres: []
+    #    #description:
+    #    works: ['/work/'] 
+    #    links: ['/link/'] 
+
+
+    #subject:
+    #  parameters:
+    #    name: ' ' 
+
+    #toc_item:
+    #  parameters:
+    #    class: ' '
+    #    label: ' '
+    #    title: ' '
+    #    pagenum: ' '
+
+    #type:
+    #  parameters:
+    #    name: ' '
+
+    user:
+      parameters:
+        displayname: ' '
+        website: []
+        #description: ' '
+        bot: ' '
+
+    usergroup:
+      parameters:
+        #description:
+        members: ['/people/']
+
+    volume:
+      parameters:
+        ia_id: ' '
+        volume_number: ' '
 
     work:
       parameters:
@@ -358,122 +477,17 @@ api:
     input:
       type: json
       params: *prms
-      options: [limit, offset, "*", *flds]
+      options: [limit, offset, "*", *mflds]
       
   search: &srch
     namespace: 'search'
     path: /search.json?
     input: 
       type: key_value
-      params: *flds
+      params: *sflds
       options: Null
       param_bind_chain: ["=", "&"]
       option_bind_chain: ["=", "&"]
       lazy_key: 'q'
 
-  default: *srch
-
-
-
-
-
-
-
-  #author/books:
-  #author_role:
-  #backreference:
-  #boolean:
-  #collection:
-  #collection/edition:
-  #content:
-  #contribution:
-  #datetime:
-  #delete:
-  #doc:
-  #edition:
-  #  [title: 
-  #  title_prefix:
-  #  subtitle: 
-  #  other_titles:
-  #  authors:
-  #  by_statement:
-  #  publish_date: 
-  #  copyright_date: 
-  #  edition_name: 
-  #  languages: 
-  #  description: 
-  #  notes: 
-  #  genres: 
-  #  table_of_contents:
-  #  work_titles:
-  #  series:
-  #  physical_dimensions:
-  #  physical_format:
-  #  number_of_pages:
-  #  subjects:
-  #  pagination: 
-  #  lccn:
-  #  ocaid: 
-  #  oclc_numbers:
-  #  isbn_10:
-  #  isbn_13:
-  #  dewey_decimal_class:
-  #  lc_classifications:
-  #  contributions:
-  #  publish_places: 
-  #  publish_country: 
-  #  publishers:
-  #  distributors:
-  #  first_sentence:
-  #  weight:
-  #  location:
-  #  scan_on_demand:
-  #  collections:
-  #  uris:
-  #  uri_descriptions:
-  #  translation_of:
-  #  works:
-  #  source_records:
-  #  translated_from: 
-  #  scan_records:
-  #  volumes:
-  #  accompanying_material:
-  #edition/scan_records:
-  #edition/sscan_records:
-  #edition/volumes:
-  #float:
-  #home:
-  #i18n:
-  #i18n_page:
-  #int:
-  #key:
-  #language:
-  #library:
-  #library_address:
-  #link:
-  #list:
-  #macro:
-  #object:
-  #page:
-  #permission:
-  #permission/controls:
-  #place:
-  #property:
-  #rawtext:
-  #redirect:
-  #scan_location:
-  #scan_location/available_locations:
-  #scan_record:
-  #series:
-  #string:
-  #subject:
-  #template:
-  #text:
-  #toc_item:
-  #translated_string:
-  #type:
-  #uri:
-  #user:
-  #usergroup:
-  #volume:
- 
+  default: *qry

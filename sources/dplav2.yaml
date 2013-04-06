@@ -1,0 +1,55 @@
+namespace:
+  'dplav2'
+url:
+  http://api.dp.la/v2
+
+parameters: &prms
+  
+  fields:
+    mode: field
+    keys: 
+      [api_key,
+      callback,
+      isPartOf,
+      provider]
+
+    sourceResources:
+      title:       {sourceResource.title: ''}
+      description: {sourceResource.description: ''}
+      subject:     {sourceResource.subject: '' }
+      creator:     {sourceResource.creator: ''}
+      type:        {sourceResource.type: ''}
+      publisher:   {sourceResource.publisher: ''}
+      format:      {sourceResource.format: ''}
+      rights:      {sourceResource.rights: ''}
+      contributor: {sourceResource.contributor: ''}
+      spatial:     {sourceResource.spatial: ''}
+      city:        {sourceResource.spatial.city: ''}
+      state:       {sourceResource.spatial.state: ''}
+      coordinates: {sourceResource.spatial.coordinates: ''}
+      distance:    {sourceResource.spatial.distance: ''}
+      before:      {sourceResource.date.before: ''}
+      after:       {sourceResource.date.after: ''}
+  
+  options: &opts
+    mode: field
+    sort:
+      by: {sort_by: ' '}
+      order: {sort_order: ' '}
+
+
+api:  
+  items: &itms
+    namespace: 'items'
+    path: /items?
+    input:
+      type: key_value
+      params: *prms
+      options: [*opts, page, page_size]
+      multi_value: True
+      param_bind_chain: ["=", "&"]
+      option_bind_chain: ["=", "&"] 
+      multi_bind_chain: [":", ":"] 
+      lazy_key: 'q'
+
+  default: *itms

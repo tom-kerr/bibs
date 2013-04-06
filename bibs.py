@@ -47,8 +47,8 @@ class Bibs(object):
         query_object.parse_input_options()
         query_object.build_string()
         #return
-        request = urllib2.urlopen(query_object.query_string)
-        results = request.read()
+        #request = urllib2.urlopen(query_object.query_string)
+        #results = request.read()
         #pprint.pprint(json.loads(results))
         return results        
         
@@ -67,9 +67,9 @@ class Bibs(object):
                 for k,v in key.items():
                     self.query_elements['prototype']['string'] += k + self.param_bind_char + v
 
-
-    def build_args_string(self):        
-        for arg in self.query_elements['args']:
+    
+    def build_arg_string(self, e):        
+        for arg in self.query_elements[e]:
             arg['string'] = ''
             key = arg['key']
             value = arg['value']
@@ -82,30 +82,19 @@ class Bibs(object):
                         arg['string'] += k + self.param_bind_char + str(v).replace(' ','')
             else:
                 if self.parse_type == 'json':
-                    arg['string'] += ",\""+key+"\":\""+urllib2.quote(value)+"\""
+                    if value == 'null':
+                        arg['string'] += ",\""+key+"\":"+value+""
+                    else:
+                        arg['string'] += ",\""+key+"\":\""+urllib2.quote(value)+"\""
                 else:
                     arg['string'] += key + self.param_bind_char + urllib2.quote(value)
-
-        
-    def build_option_string(self):        
-        for option in self.query_elements['options']:
-            option['string'] = ''
-            key = option['key']
-            value = urllib2.quote(option['value'])
-            if self.parse_type == 'json':
-                if value == 'null':
-                    option['string'] += ",\""+key+"\":"+value+""
-                else:
-                    option['string'] += ",\""+key+"\":\""+value+"\""
-            else:
-                option['string'] += key + self.option_bind_char + value
 
 
     def build_string(self):
         self.build_prototype_string()
-        self.build_args_string()
-        self.build_option_string()
-                
+        for e in ('args', 'options'):
+            self.build_arg_string(e)
+       
         string = ''
         if 'prototype' in self.query_elements:
             string += self.query_elements['prototype']['string']
@@ -114,14 +103,15 @@ class Bibs(object):
         if 'args' in self.query_elements:
             for num, arg in enumerate(self.query_elements['args']):
                 string += arg['string']
-                if self.parse_type != 'json':
-                     string += self.param_chain_char
+                if self.parse_type != 'json' and len(self.query_elements['args']) > 0:
+                    if num < len(self.query_elements['args']):
+                        string += self.param_chain_char
         if 'options' in self.query_elements:
-            for option in self.query_elements['options']:
-                if self.parse_type != 'json':
-                    string += self.option_chain_char + option['string']
-                else:
-                    string += option['string']
+            for num, option in enumerate(self.query_elements['options']):
+                string += option['string']
+                if self.parse_type != 'json' and len(self.query_elements['options']) > 0:
+                    if num < len(self.query_elements['options']):
+                        string += self.option_chain_char
 
         if self.parse_type == 'json':
             self.query_string = self.url + self.path + '{' + string + '}'
@@ -150,7 +140,9 @@ class Bibs(object):
     def assign_dict_params(self, param_dict, value):
         for param, entry in param_dict.items():            
             if type(entry) == str:
-                param_dict[param] += urllib2.quote(str(value))
+                if self.multi_value:
+                    value = re.sub('(?<!\\\\)\|', self.multi_bind_char, value)
+                    param_dict[param] += urllib2.quote(str(value))
                 param_dict[param] = param_dict[param].lstrip(' ').rstrip(' ')
                 return param_dict
             elif type(entry) == list:
@@ -214,6 +206,10 @@ class Bibs(object):
 
             arg = elements[:-1]
             value = [elements[-1],][0]
+
+            if self.params is None:
+                self.query_elements['args'].append({'key':'', 'value':value})
+                continue
             
             if len(arg) == 1 and arg[0] == '' and self.lazy_key is not None:
                 self.query_elements['args'].append({'key': self.lazy_key,
@@ -402,16 +398,6 @@ class Bibs(object):
         return query_object
 
 
-    def split_and_strip(self, string):
-        elements = re.split('(?<!\\\\):', string)
-        new_elements = []
-        for num, element in enumerate(elements):
-            element = re.sub('\\\\:', ':', element)
-            element = re.sub('\\\\@', '@', element)
-            new_elements.append(element.lstrip(' ').rstrip(' ').split('->'))
-        return new_elements
-
-
     def format_input_string(self):
         input_elements = input_options = None
         elements = re.split('(?<!\\\\)@', self.input_string)        
@@ -422,20 +408,23 @@ class Bibs(object):
         else:
             raise Exception('Invalid use of \'@\'')
         self.input_elements = self.lex(input_elements)
-        
         if input_options:
             self.input_options = self.lex(input_options)
 
 
     def lex(self, string):
-        if self.multi_value:
-            bind = self.multi_bind_char
-            elements = string.split(bind)
-            for num, element in enumerate(elements):
-                elements[num] = self.split_and_strip(element)[0]
-        else:
-            elements = self.split_and_strip(string)
+        elements = self.split_and_strip(string)
         return elements
+
+
+    def split_and_strip(self, string):
+        elements = re.split('(?<!\\\\):', string)
+        new_elements = []
+        for num, element in enumerate(elements):
+            element = re.sub('\\\\:', ':', element)
+            element = re.sub('\\\\@', '@', element)
+            new_elements.append(element.lstrip(' ').rstrip(' ').split('->'))
+        return new_elements
 
 
     

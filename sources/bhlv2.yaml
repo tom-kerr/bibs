@@ -2,8 +2,8 @@ namespace:
   'bhlv2'
 url:
   http://biodiversitylibrary.org/api2
-parameters: &prms
 
+parameters: &prms
   fields:
     mode: field
     keys: [apikey, ]

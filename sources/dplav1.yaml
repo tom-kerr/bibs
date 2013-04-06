@@ -2,9 +2,9 @@ namespace:
   'dplav1'
 url: 
   http://api.dp.la/v1
-
 parameters: &prms
-  fields:
+
+  fields: &flds
     mode: field
     keys: 
       [title,
@@ -26,10 +26,11 @@ parameters: &prms
       isPartOf,
       temporal.before,
       temporal.after]
-
+    sort_by: {sort_by: ''}
+  
 api:
   items: &itms
-    namespace: 'item'
+    namespace: 'items'
     path: /items?
     input:
       type: key_value
@@ -38,4 +39,5 @@ api:
       param_bind_chain: ["=", "&"]
       option_bind_chain: ["=", "&"]
       lazy_key: 'q'
+
   default: *itms
