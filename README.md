@@ -20,7 +20,7 @@ where **title->Tom Sawyer** is the *query*, **dplav1** is the bibliographic *sou
 Query
 -----
 
-Queries are composed of one or more key/value pairs. Keys and their values are to be separated by an '**->**', while each pair is separated by an '**:**'. Key/values may also be nested. For instance, to search Open Library's "query" api for all editions that contain a Title of Contents with an entry for page 19:
+Queries are composed of one or more key/value pairs. Keys and their values are to be separated by an **->**, while each pair is separated by an **:**. Key/values may also be nested. For instance, to search Open Library's "query" api for all editions that contain a Title of Contents with an entry for page 19:
 
 	b.search("types->edition:table_of_contents->pagenum->19", 'openlibrary', 'query') 
 
@@ -33,11 +33,11 @@ Or,
 	 b.search('oclc->424023|isbn->0030110408', 'hathitrust', 'multi_volumes_full')
 
 
-Optional arguments are to be preceded by an '**@**', like:
+Optional arguments are to be preceded by an **@**, like:
 
 	 b.search('types->edition:title->Macbeth@publish_date->null:limit->5', 'openlibrary', 'query')
 
-where '**publish_date->null**' will request data from the publish_date field for all editions found whose title is 'Macbeth', and '**limit->5**' will limit the results to five.  
+where **publish_date->null** will request data from the **publish_date** field for all editions found whose title is 'Macbeth', and **limit->5** will limit the results to five.  
 
 
 Source
