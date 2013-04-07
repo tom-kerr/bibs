@@ -47,8 +47,8 @@ class Bibs(object):
         query_object.parse_input_options()
         query_object.build_string()
         #return
-        #request = urllib2.urlopen(query_object.query_string)
-        #results = request.read()
+        request = urllib2.urlopen(query_object.query_string)
+        results = request.read()
         #pprint.pprint(json.loads(results))
         return results        
         
@@ -88,6 +88,7 @@ class Bibs(object):
                         arg['string'] += ",\""+key+"\":\""+urllib2.quote(value)+"\""
                 else:
                     arg['string'] += key + self.param_bind_char + urllib2.quote(value)
+            
 
 
     def build_string(self):
@@ -142,7 +143,7 @@ class Bibs(object):
             if type(entry) == str:
                 if self.multi_value:
                     value = re.sub('(?<!\\\\)\|', self.multi_bind_char, value)
-                    param_dict[param] += urllib2.quote(str(value))
+                param_dict[param] += urllib2.quote(str(value))
                 param_dict[param] = param_dict[param].lstrip(' ').rstrip(' ')
                 return param_dict
             elif type(entry) == list:
@@ -287,7 +288,6 @@ class Bibs(object):
 
     def find_dict_entry(self, arg, params):
         for param, entry in params.items():
-            #print arg, param
             match = re.match('^(?i)'+arg+'$', param)
             if match:
                 path = param
@@ -308,7 +308,6 @@ class Bibs(object):
 
     def find_list_entry(self, arg, params):
         for param in params:
-            #print arg, param
             if type(param) == dict:
                 match = self.find_dict_entry(arg, param)        
                 if match:

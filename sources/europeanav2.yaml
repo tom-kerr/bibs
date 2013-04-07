@@ -17,5 +17,5 @@ api:
       options: [callback, profile, qf, rows, start]
       param_bind_chain: ['=', '&']
       option_bind_chain: ['=', '&']
-      q_key: 'query'
+      
   default: *srch

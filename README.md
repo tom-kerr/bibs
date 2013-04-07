@@ -54,7 +54,7 @@ Currently supported Sources:
 - openlibrary (<a href='http://openlibrary.org'>Open Library</a>)
 - europeana   (<a href='http://europeana.eu'>Europeana</a>)
 - googlebooks (<a href='http://books.google.com'>Google Books</a>)
-
+- locsruv1.1  (<a href='http://loc.gov/standards/sru'>Library of Congress SRU</a>)
 
 Api
 ---

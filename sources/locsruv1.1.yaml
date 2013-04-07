@@ -1,0 +1,34 @@
+namespace:
+  'locsruv1.1'
+url:
+  http://z3950.loc.gov:7090
+
+parameters: &prms
+  mandatory:
+    mode: field
+    keys: [query]
+
+  options: &opts
+    mode: field
+    keys:
+      [startRecord,
+      maximumRecords,
+      recordPacking,
+      recordSchema,
+      recordXPath,
+      sortKeys,
+      resultSetTTL,
+      stylesheet,
+      extraRequestData]
+          
+api:
+  voyager: &vygr
+    path: /voyager?version=1.1&operation=searchRetrieve&
+    input:
+      type: key_value
+      params: *prms
+      options: *opts
+      multi_value: True
+      param_bind_chain: ['=', '&']
+      option_bind_chain: ['=', '&']
+      multi_bind_chain: [',', ',']
