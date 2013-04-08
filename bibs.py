@@ -45,7 +45,7 @@ class Bibs(object):
         query_object = self.create_query_object(input_string, search_source, api)
         query_object.parse_input_elements()
         query_object.parse_input_options()
-        if query_object.required:
+        if query_object.global_required or query_object.proto_required:
             query_object.check_required()
         query_object.build_string()
         #return
@@ -55,15 +55,30 @@ class Bibs(object):
         return results        
 
 
-    def check_required(self):
-        required = self.required['keys']
-        for n, r in enumerate(required):
-            for element in self.query_elements['args']:
-                print element
-                if r in element['key']:
-                    required.pop(n)
-        if len(required) != 0:
-            raise Exception('Missing required argument(s) \''+str(required)+'\'')
+    def check_required(self):        
+        for mode, items in {'args': self.global_required,
+                            'prototype': self.proto_required}.items():
+            if items is None:
+                continue
+
+            required = items['keys']
+            
+            if type(required) == dict:
+                new_list = []
+                for key in required.keys():
+                    new_list.append(key)
+                required = new_list
+
+            found = []
+            for n, r in enumerate(required):
+                for element in self.query_elements['args']:
+                    if r in element['key']:
+                        found.append(r)
+                        break 
+
+            if len(required) != len(found):
+                raise Exception('Missing required argument(s)...Found:\''+
+                                str(found)+'\'  Required:\''+str(required)+'\'')
         
 
     def build_prototype_string(self):        
@@ -169,11 +184,12 @@ class Bibs(object):
     def parse_prototype(self, arg, value):
         if 'parameters' not in self.prototype:
             raise Exception('Invalid prototype \''+self.prototype+'\'')
+
         path, entry = self.find_param(arg, self.prototype['parameters'])
         if entry is None:
             raise Exception('Invalid parameter \''+str(arg)+'\'')
         root = path[0]
-        
+
         if 'mode' in entry:
             if entry['mode'] == 'field':
                 path, entry = self.find_param(value, entry)
@@ -229,8 +245,8 @@ class Bibs(object):
                                                     'value': value})
                 continue
 
-            if self.required:
-                path, entry = self.find_param(arg, self.required)
+            if self.global_required:
+                path, entry = self.find_param(arg, self.global_required)
                 if entry:
                     self.query_elements['args'].append({'key': entry,
                                                         'value': value})
@@ -239,12 +255,11 @@ class Bibs(object):
             if self.prototype:
                 self.parse_prototype(arg, value)
             else:
-                path, entry = self.find_param(arg, self.params)            
-                root = path[0]                
-
+                path, entry = self.find_param(arg, self.params)                            
                 if not entry:
                     raise Exception('Invalid parameter \''+str(arg)+'\'')                
-                
+                root = path[0]                
+
                 if 'mode' in self.params[root]:
                     mode = self.params[root]['mode']
                 else:
@@ -257,11 +272,12 @@ class Bibs(object):
 
                 elif mode == 'prototype':                    
                     path, proto_entry = self.find_param((value,), entry)
-
                     if not proto_entry:
                         raise Exception('Invalid prototype \''+str(value)+'\'')
                     proto_param = path[0]
                     self.prototype = proto_entry
+                    if 'required' in self.prototype:
+                        self.proto_required = self.prototype['required']
 
                     if 'key' in entry:
                         key = entry['key']
@@ -375,6 +391,7 @@ class Bibs(object):
         query_object.path = source['api'][api]['path']
         query_object.parse_type = source['api'][api]['input']['type']
         query_object.prototype = None
+        query_object.proto_required = None
         query_object.input_string = input_string
         query_object.input_elements = []
         query_object.input_options = []
@@ -384,9 +401,9 @@ class Bibs(object):
         query_object.options = source['api'][api]['input']['options']
         
         if 'required' in source['api'][api]['input']:
-            query_object.required = source['api'][api]['input']['required']
+            query_object.global_required = source['api'][api]['input']['required']
         else:
-            query_object.required = None
+            query_object.global_required = None
         
         if 'param_bind_chain' in source['api'][api]['input']:
             query_object.param_bind_char   = source['api'][api]['input']['param_bind_chain'][0]

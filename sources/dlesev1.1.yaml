@@ -1,0 +1,111 @@
+namespace:
+  'dlesev1.1'
+url:
+  http://www.dlese.org/dds/services
+
+parameters: &prms
+  verb:
+    mode: prototype
+    key: {verb: ''}
+
+    Search:
+      required:
+        keys: [s,n]
+      parameters:
+        s: ' '
+        n: ' '
+        q: ' '
+        ky: ' '
+        gr: ' '
+        re: ' '
+        su: ' '
+        cs: ' '
+        dateField: ' '
+        fromDate: ' '
+        toDate: ' '
+        geoPredicate: ' '
+        geoBBNorth: ' '
+        geoBBSouth: ' '
+        geoBBEast: ' '
+        geoBBWest: ' '
+        geoClause: ' '
+        xmlFormat: ' '
+        client: ' '
+        so: ' '
+        sortAscendingBy: ' '
+        sortDescendingBy: ' '
+    
+    UserSearch:
+      parameters:
+        q: ' '
+        ky: ' '
+        gr: ' '
+        re: ' '
+        su: ' '
+        cs: ' '
+        geoPredicate: ' '
+        geoBBNorth: ' '
+        geoBBSouth: ' '
+        geoBBEast: ' '
+        geoBBWest: ' '
+        geoClause: ' '
+        s: ' '
+        n: ' '
+        client: ' '
+        
+    GetRecord:
+      required:
+        keys: [id]
+      parameters:
+        id: ' '
+        xmlFormat: ' '
+        so: ' '
+    
+    ListFields:
+      parameters: Null
+
+    ListTerms:
+      required:
+        keys: [field]
+      parameters: 
+        field: ' '
+        
+    ListCollections:
+      parameters: Null
+
+    ListGradeRanges:
+      parameters: Null
+      
+    ListSubjects:
+      parameters: Null
+
+    ListResourceTypes:
+      parameters: Null
+
+    ListContentStandards:
+      parameters: Null
+
+    ListXmlFormats:
+      parameters: 
+        id: ' '
+
+    UrlCheck:
+      required:
+        keys: [url]
+      parameters:
+        url: ' '
+
+    ServiceInfo:
+      parameters: Null
+
+api:
+  ddsws: &ddsws
+    path: /ddsws1-1?
+    input:
+      type: key_value
+      params: *prms
+      options: [output, callback, transform]
+      param_bind_chain: ["=", "&"]
+      option_bind_chain: ["=", "&"]
+
+  default: *ddsws
