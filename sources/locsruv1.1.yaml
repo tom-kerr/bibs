@@ -4,7 +4,7 @@ url:
   http://z3950.loc.gov:7090
 
 parameters: &prms
-  mandatory:
+  required: &rqrd
     mode: field
     keys: [query]
 
@@ -28,7 +28,10 @@ api:
       type: key_value
       params: *prms
       options: *opts
+      required: *rqrd
       multi_value: True
       param_bind_chain: ['=', '&']
       option_bind_chain: ['=', '&']
       multi_bind_chain: [',', ',']
+
+  default: *vygr

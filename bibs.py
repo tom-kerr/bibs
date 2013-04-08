@@ -45,12 +45,25 @@ class Bibs(object):
         query_object = self.create_query_object(input_string, search_source, api)
         query_object.parse_input_elements()
         query_object.parse_input_options()
+        if query_object.required:
+            query_object.check_required()
         query_object.build_string()
         #return
         request = urllib2.urlopen(query_object.query_string)
         results = request.read()
         #pprint.pprint(json.loads(results))
         return results        
+
+
+    def check_required(self):
+        required = self.required['keys']
+        for n, r in enumerate(required):
+            for element in self.query_elements['args']:
+                print element
+                if r in element['key']:
+                    required.pop(n)
+        if len(required) != 0:
+            raise Exception('Missing required argument(s) \''+str(required)+'\'')
         
 
     def build_prototype_string(self):        
@@ -89,7 +102,6 @@ class Bibs(object):
                 else:
                     arg['string'] += key + self.param_bind_char + urllib2.quote(value)
             
-
 
     def build_string(self):
         self.build_prototype_string()
@@ -216,7 +228,14 @@ class Bibs(object):
                 self.query_elements['args'].append({'key': self.lazy_key,
                                                     'value': value})
                 continue
-            
+
+            if self.required:
+                path, entry = self.find_param(arg, self.required)
+                if entry:
+                    self.query_elements['args'].append({'key': entry,
+                                                        'value': value})
+                    continue
+
             if self.prototype:
                 self.parse_prototype(arg, value)
             else:
@@ -363,6 +382,11 @@ class Bibs(object):
         query_object.query_elements = {}
         query_object.params = source['api'][api]['input']['params']
         query_object.options = source['api'][api]['input']['options']
+        
+        if 'required' in source['api'][api]['input']:
+            query_object.required = source['api'][api]['input']['required']
+        else:
+            query_object.required = None
         
         if 'param_bind_chain' in source['api'][api]['input']:
             query_object.param_bind_char   = source['api'][api]['input']['param_bind_chain'][0]

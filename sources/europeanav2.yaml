@@ -4,7 +4,7 @@ url:
   http://preview.europeana.eu/api/v2
 
 parameters: &prms
-  fields:
+  required: &rqrd
     mode: field
     keys: [wskey, query]
 
@@ -13,8 +13,9 @@ api:
     path: /search.json?
     input:
       type: key_value
-      params: *prms
+      params: &prms
       options: [callback, profile, qf, rows, start]
+      required: *rqrd
       param_bind_chain: ['=', '&']
       option_bind_chain: ['=', '&']
       

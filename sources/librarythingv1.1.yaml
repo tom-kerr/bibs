@@ -1,0 +1,90 @@
+namespace:
+  'librarythingv1.1'
+url:
+  http://www.librarything.com/services
+
+parameters: &prms
+  required: &rqrd
+    mode: field
+    keys: [apikey]
+    
+  ck:
+    mode: prototype
+    key: {method: 'librarything.ck.'}
+    
+    getwork: 
+      parameters:
+        id: ' '
+        isbn: ' '
+        lccn: ' '
+        oclc: ' '
+        name: ' '
+
+    getauthor:
+      parameters:
+        id: ' '
+        authorcode: ' '
+        name: ' '
+          
+  local:
+    mode: prototype
+    key: {method: 'librarything.local.'}
+      
+    getvenue:
+      parameters:
+        id: ' '
+
+    getvenuesnear:
+      parameters:
+        latlon: ' '
+        lat: ' '
+        lon: ' '
+        id: ' '
+        place: ' '
+        distance: ' '
+        measure: ' '
+        venueType: ' '  
+        
+    searchvenues:
+      parameters:
+        q: ' '
+        latlon: ' '
+        lat: ' '
+        lon: ' '
+        centeronq: ' '
+        measure: ' '
+        
+    geteventsnear:
+      parameters:
+        timestamp: ' '
+        latlon: ' '
+        lat: ' '
+        lon: ' '
+        venue: ' '
+        place: ' '
+        distance: ' '
+        measure: ' '
+        days: ' '
+        limit: ' '
+
+    searchevents:
+      parameters:
+        q: ' '
+        latlon: ' '
+        lat: ' '
+        lon: ' '
+        centeronq: ' '
+        measure: ' '
+    
+api:
+  rest: &rst
+    path: /rest/1.1/?
+    input:
+      type: key_value
+      params: *prms
+      options: Null
+      required: *rqrd
+      param_bind_chain: ['=', '&']
+      option_bind_chain: ['=', '&']
+
+  default: *rst

@@ -251,7 +251,6 @@ parameters: &prms
         code: ' '
         library_of_congress_name: ' '
 
-
     library:
       parameters:
         #ip_ranges: ' '
@@ -261,7 +260,6 @@ parameters: &prms
         country: ' '
         #addresses: ' '
         telephone: ' '
-
 
     library_address:
       parameters:    

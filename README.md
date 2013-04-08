@@ -48,13 +48,12 @@ Each source is modeled in YAML, providing the information necessary to parse que
 
 Currently supported Sources:
 
-- dpla(v1|v2) (<a href='http://dp.la'>Digital Public Library of America</a>)
-- bhlv2       (<a href='http://biodiversityheritagelibrary.org'>Biodiversity Heritage Library</a>)
-- hathitrust  (<a href='http://hathitrust.org'>Hathi Trust</a>)
-- openlibrary (<a href='http://openlibrary.org'>Open Library</a>)
-- europeana   (<a href='http://europeana.eu'>Europeana</a>)
-- googlebooks (<a href='http://books.google.com'>Google Books</a>)
-- locsruv1.1  (<a href='http://loc.gov/standards/sru'>Library of Congress SRU</a>)
+- dpla(v1|v2)      (<a href='http://dp.la'>Digital Public Library of America</a>)
+- bhlv2            (<a href='http://biodiversityheritagelibrary.org'>Biodiversity Heritage Library</a>)
+- hathitrust       (<a href='http://hathitrust.org'>Hathi Trust</a>)
+- openlibrary      (<a href='http://openlibrary.org'>Open Library</a>)
+- europeanav2      (<a href='http://europeana.eu'>Europeana</a>)
+- googlebooks      (<a href='http://books.google.com'>Google Books</a>)
+- locsruv1.1       (<a href='http://loc.gov/standards/sru'>Library of Congress SRU</a>)
+- librarythingv1.1 (<a href='http://www.librarything.com/services/rest/documentation/1.1/'>Library Thing</a>)
 
-Api
----

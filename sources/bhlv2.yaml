@@ -4,9 +4,9 @@ url:
   http://biodiversitylibrary.org/api2
 
 parameters: &prms
-  fields:
+  required: &rqrd
     mode: field
-    keys: [apikey, ]
+    keys: [apikey]
 
   identifiers_1: &ids1
     mode: field
@@ -195,6 +195,7 @@ api:
       type: key_value
       params: *prms
       options: [format, callback]
+      required: *rqrd
       param_bind_chain: ['=', '&']
       option_bind_chain: ['=', '&']
   default: *qry

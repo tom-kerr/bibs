@@ -4,12 +4,14 @@ url:
   http://api.dp.la/v2
 
 parameters: &prms
+  required: &rqrd
+    mode: field
+    keys: [api_key]
   
   fields:
     mode: field
     keys: 
-      [api_key,
-      callback,
+      [callback,
       isPartOf,
       provider]
 
@@ -46,6 +48,7 @@ api:
       type: key_value
       params: *prms
       options: [*opts, page, page_size]
+      required: *rqrd
       multi_value: True
       param_bind_chain: ["=", "&"]
       option_bind_chain: ["=", "&"] 
