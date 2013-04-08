@@ -43,7 +43,7 @@ where **publish_date->null** will request data from the **publish_date** field f
 Source
 -----
 
-Each source is modeled in YAML, providing the information necessary to parse queries and the documentation to form queries. 
+Each source is modeled in YAML, providing the information necessary to parse queries and the documentation on how to form queries. 
 
 
 Currently supported Sources:
@@ -55,5 +55,5 @@ Currently supported Sources:
 - europeanav2      (<a href='http://europeana.eu'>Europeana</a>)
 - googlebooks      (<a href='http://books.google.com'>Google Books</a>)
 - locsruv1.1       (<a href='http://loc.gov/standards/sru'>Library of Congress SRU</a>)
-- librarythingv1.1 (<a href='http://www.librarything.com/services/rest/documentation/1.1/'>Library Thing</a>)
-
+- librarythingv1.1 (<a href='http://www.librarything.com'>Library Thing</a>)
+- dlesev1.1        (<a href='http://www.dlese.org'>Digital Library for Earth System Education</a>)
