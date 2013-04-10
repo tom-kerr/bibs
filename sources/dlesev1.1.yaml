@@ -11,6 +11,14 @@ parameters: &prms
     Search:
       required:
         keys: [s,n]
+      cond_req:
+        keys: 
+          [geoPredicate,
+          geoBBNorth,
+          geoBBSouth,
+          geoBBEast,
+          geoBBWest,
+          geoClause]
       parameters:
         s: ' '
         n: ' '
@@ -86,6 +94,8 @@ parameters: &prms
       parameters: Null
 
     ListXmlFormats:
+      optional:
+        keys: [id]
       parameters: 
         id: ' '
 

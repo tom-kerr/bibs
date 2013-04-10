@@ -16,29 +16,62 @@ parameters: &prms
       provider]
 
     sourceResources:
-      title:       {sourceResource.title: ''}
-      description: {sourceResource.description: ''}
-      subject:     {sourceResource.subject: '' }
-      creator:     {sourceResource.creator: ''}
-      type:        {sourceResource.type: ''}
-      publisher:   {sourceResource.publisher: ''}
-      format:      {sourceResource.format: ''}
-      rights:      {sourceResource.rights: ''}
-      contributor: {sourceResource.contributor: ''}
-      spatial:     {sourceResource.spatial: ''}
-      city:        {sourceResource.spatial.city: ''}
-      state:       {sourceResource.spatial.state: ''}
-      coordinates: {sourceResource.spatial.coordinates: ''}
-      distance:    {sourceResource.spatial.distance: ''}
-      before:      {sourceResource.date.before: ''}
-      after:       {sourceResource.date.after: ''}
+      title:        {sourceResource.title: ''}
+      description:  {sourceResource.description: ''}
+
+      subject:
+        id:        {sourceResource.subject.@id: '' }
+        type:      {sourceResource.subject.@type: '' }
+        name:       {sourceResource.subject.name: '' }
+
+      creator:      {sourceResource.creator: ''}
+      type:         {sourceResource.type: ''}
+      publisher:    {sourceResource.publisher: ''}
+      format:       {sourceResource.format: ''}
+      rights:       {sourceResource.rights: ''}
+      contributor:  {sourceResource.contributor: ''}
+
+      spatial:
+        spatial:     {sourceResource.spatial: ''}
+        name:        {sourceResource.spatial.name: ''}
+        city:        {sourceResource.spatial.city: ''}
+        state:       {sourceResource.spatial.state: ''}
+        country:     {sourceResource.spatial.country: ''}
+        county:      {sourceResource.spatial.county: ''}
+        region:      {sourceResource.spatial.region: ''}
+        iso3166-2:   {sourceResource.spatial.iso3166-2: ''}
+        coordinates: {sourceResource.spatial.coordinates: ''}
+        distance:    {sourceResource.spatial.distance: ''}
+      before:       {sourceResource.date.before: ''}
+      after:        {sourceResource.date.after: ''}
+
+
+  #facets:
+    #mode: filter
+    #key: {facets: ''}
+    #parameters:
+      #spatial:
+      #  name:        'sourceResource.spatial.name'
+      #  coordinates: 'sourceResource.spatial.coordinates'
+      #date:
+      #  begin:       'sourceResource.date.begin'
+      #  begin.year:  'sourceResource.date.begin.year'
+      #  begin.month: 'sourceResource.date.begin.month'
+      #  begin.day:   'sourceResource.date.begin.day'
+      #  end:         'sourceResource.date.end'
+      #  end.year:    'sourceResource.date.end.year'
+      #  end.month:   'sourceResource.date.end.month'
+      #  end.day:     'sourceResource.date.end.day'
+      #language:
+      #  name:   'sourceResource.language.name'
+      #subject:  'sourceResource.subject'
+      
   
   options: &opts
     mode: field
     sort:
       by: {sort_by: ' '}
       order: {sort_order: ' '}
-
 
 api:  
   items: &itms
@@ -47,12 +80,12 @@ api:
     input:
       type: key_value
       params: *prms
-      options: [*opts, page, page_size]
+      options: [*opts, page, page_size, facet_size]
       required: *rqrd
       multi_value: True
       param_bind_chain: ["=", "&"]
       option_bind_chain: ["=", "&"] 
-      multi_bind_chain: [":", ":"] 
+      multi_bind_chain: [",", ","] 
       lazy_key: 'q'
 
   default: *itms
