@@ -1,7 +1,7 @@
 namespace:
   'bhlv2'
 url:
-  http://biodiversitylibrary.org/api2
+  'http://biodiversitylibrary.org/api2'
 
 parameters: &prms
   required: &rqrd
@@ -190,12 +190,21 @@ parameters: &prms
 
 api:
   query: &qry
-    path: /httpquery.ashx?
+    path: '/httpquery.ashx?{0}'
     input:
       type: key_value
       params: *prms
       options: [format, callback]
       required: *rqrd
-      param_bind_chain: ['=', '&']
-      option_bind_chain: ['=', '&']
+      syntax:
+        prototype:
+          bind: '='
+          chain: '&'
+        field:
+          bind: '='
+          chain: '&'
+        option:
+          bind: '='
+          chain: '&'
+
   default: *qry

@@ -1,7 +1,7 @@
 namespace:
   'hathitrust'
 url:
-  http://catalog.hathitrust.org
+  'http://catalog.hathitrust.org'
 
 parameters:  
   library_identifiers_lower: &libidslow
@@ -10,47 +10,67 @@ parameters:
 
 api:
   volumes_brief: &volsbrief
-    namespace: 'volumes_brief'
-    path: /api/volumes/brief/
+    path: '/api/volumes/brief/{0}.json'
     input:
       type: key_value
       params: *libidslow
       options: [callback]
-      param_bind_chain: ['/', '.json']
-      option_bind_chain: ['=','?']
+      syntax:
+        field:
+          bind: '/'
+          chain: Null
+        option:
+          bind: '='
+          chain: '?'
 
   multi_volumes_brief: &multivolsbrief
-    namespace: 'multi_volumes_brief'
-    path: /api/volumes/brief/json/
+    path: '/api/volumes/brief/json/{0}'
     input:
       type: key_value
       params: *libidslow
       options: [callback]
       multi_value: True
-      param_bind_chain: [':', ';']
-      option_bind_chain: ['=','?']
-      multi_bind_chain: ['|', '|']
+      syntax:
+        field:
+          bind: ':'
+          chain: ';'
+        option:
+          bind: '='
+          chain: '?'
+        multi:
+          bind: '|'
+          chain: Null
 
   volumes_full: &volsfull
-    namespace: 'volumes_full'
-    path: /api/volumes/full/
+    path: '/api/volumes/full/{0}.json'
     input:
       type: key_value
       params: *libidslow
       options: [callback]
-      param_bind_chain: ['/', '.json']
-      option_bind_chain: ['=','?']
+      syntax:
+        field:
+          bind: '/'
+          chain: Null
+        option:
+          bind: '='
+          chain: '?'
 
   multi_volumes_full: &multivolsfull
-    namespace: 'multi_volumes_full'
-    path: /api/volumes/full/json/
+    path: '/api/volumes/full/json/{0}'
     input:
       type: key_value
       params: *libidslow
       options: [callback]
       multi_value: True
-      param_bind_chain: [':', ';']
-      option_bind_chain: ['=','?']
-      multi_bind_chain: ['|', '|']
+      syntax:
+        field:
+          bind: ':'
+          chain: ';'
+        option:
+          bind: '='
+          chain: '?'
+        multi:
+          bind: '|'
+          chain: Null
 
   default: *volsbrief

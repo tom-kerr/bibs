@@ -1,7 +1,7 @@
 namespace:
   'europeanav2'
 url:
-  http://preview.europeana.eu/api/v2
+  'http://preview.europeana.eu/api/v2'
 
 parameters: &prms
   required: &rqrd
@@ -10,13 +10,18 @@ parameters: &prms
 
 api:
   search: &srch
-    path: /search.json?
+    path: '/search.json?{0}'
     input:
       type: key_value
       params: &prms
       options: [callback, profile, qf, rows, start]
       required: *rqrd
-      param_bind_chain: ['=', '&']
-      option_bind_chain: ['=', '&']
+      syntax:
+        field:
+          bind: '='
+          chain: '&'
+        option:
+          bind: '='
+          chain: '&'
       
   default: *srch

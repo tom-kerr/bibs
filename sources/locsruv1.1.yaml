@@ -1,7 +1,7 @@
 namespace:
   'locsruv1.1'
 url:
-  http://z3950.loc.gov:7090
+  'http://z3950.loc.gov:7090'
 
 parameters: &prms
   required: &rqrd
@@ -23,15 +23,22 @@ parameters: &prms
           
 api:
   voyager: &vygr
-    path: /voyager?version=1.1&operation=searchRetrieve&
+    path: '/voyager?version=1.1&operation=searchRetrieve&{0}'
     input:
       type: key_value
       params: *prms
       options: *opts
       required: *rqrd
       multi_value: True
-      param_bind_chain: ['=', '&']
-      option_bind_chain: ['=', '&']
-      multi_bind_chain: [',', ',']
+      syntax:
+        field:
+          bind: '='
+          chain: '&'
+        option:
+          bind: '='
+          chain: '&'
+        multi:
+          bind: ','
+          chain: Null
 
   default: *vygr

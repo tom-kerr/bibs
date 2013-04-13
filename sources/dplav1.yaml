@@ -1,13 +1,14 @@
 namespace:
   'dplav1'
 url: 
-  http://api.dp.la/v1
-parameters: &prms
+  'http://api.dp.la/v1'
 
+parameters: &prms
   fields: &flds
     mode: field
     keys: 
-      [title,
+      [q,
+      title,
       description,
       subject,
       dplaContributor,
@@ -30,14 +31,17 @@ parameters: &prms
   
 api:
   items: &itms
-    namespace: 'items'
-    path: /items?
+    path: '/items?{0}'
     input:
       type: key_value
       params: *prms
       options: [page, page_size]
-      param_bind_chain: ["=", "&"]
-      option_bind_chain: ["=", "&"]
-      lazy_key: 'q'
-
+      syntax:
+        field:
+          bind: '='
+          chain: '&'
+        option:
+          bind: '='
+          chain: '&'
+      
   default: *itms

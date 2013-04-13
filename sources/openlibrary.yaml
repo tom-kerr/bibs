@@ -1,13 +1,14 @@
 namespace:
   'openlibrary'
 url: 
-  http://openlibrary.org
+  'http://openlibrary.org'
 
 parameters: &prms
   searchfields: &sflds
     mode: field
     keys:
-      [title,
+      [q, 
+      title,
       author,
       subject]
 
@@ -408,84 +409,102 @@ parameters: &prms
         covers: []
           
 api: 
-  books: &bks
-    namespace: 'books'
-    path: /api/books?bibkeys=
-    input: 
-      type: key_value
-      params: *libidsup
-      options: [format, callback, jscmd]
-      param_bind_chain: [':', ',']
-      option_bind_chain: ['=', '&']
-
   volumes_brief: &volsbrief
-    namespace: 'volumes_brief'
-    path: /api/volumes/brief/
+    path: '/api/volumes/brief/{0}.json'
     input:
       type: key_value
       params: *libidslow
       options: [callback]
-      param_bind_chain: ['/', '.json']
-      option_bind_chain: ['=','?']
+      syntax:
+        field:
+          bind: '/'
+          chain: Null
+        option:
+          bind: '='
+          chain: '?'
 
   multi_volumes_brief: &multivolsbrief
-    namespace: 'multi_volumes_brief'
-    path: /api/volumes/brief/json/
+    path: '/api/volumes/brief/json/{0}'
     input:
       type: key_value
       params: *libidslow
       options: [callback]
       multi_value: True
-      param_bind_chain: [':', ';']
-      option_bind_chain: ['=','?']
-      multi_bind_chain: ['|', '|']
-
+      syntax:
+        field:
+          bind: ':'
+          chain: ';'
+        option:
+          bind: '='
+          chain: '?'
+        multi:
+          bind: '|'
+          chain: Null
+      
   volumes_full: &volsfull
-    namespace: 'volumes_full'
-    path: /api/volumes/full/
+    path: '/api/volumes/full/{0}.json'
     input:
       type: key_value
       params: *libidslow
       options: [callback]
-      param_bind_chain: ['/', '.json']
-      option_bind_chain: ['=','?']
+      syntax:
+        field:
+          bind: '/'
+          chain: Null
+        option:
+          bind: '='
+          chain: '?'
 
   multi_volumes_full: &multivolsfull
-    namespace: 'multi_volumes_full'
-    path: /api/volumes/full/json/
+    path: '/api/volumes/full/json/{0}'
     input:
       type: key_value
       params: *libidslow
       options: [callback]
-      param_bind_chain: [':', ';']
-      option_bind_chain: ['=','?']
-      multi_bind_chain: ['|', '|']
+      syntax:
+        field:
+          bind: ':'
+          chain: ';'
+        option:
+          bind: '='
+          chain: '?'
+        multi:
+          bind: '|'
+          chain: Null
 
-  things: &thngs
-    namespace: 'things'
-    path: /api/things?query=
-    input:
-      type: json
-      params: *prms
-      options: Null
+  books: &bks
+    path: '/api/books?bibkeys={0}'
+    input: 
+      type: key_value
+      params: *libidsup
+      options: [format, callback, jscmd]
+      syntax:
+        field:
+          bind: ':'
+          chain: ','
+        option:
+          bind: '='
+          chain: '&'
 
   query: &qry
-    namespace: 'query'
-    path: /query.json?query=
+    path: '/query.json?query={0}'
     input:
       type: json
       params: *prms
       options: [limit, offset, "*", *mflds]
       
   search: &srch
-    namespace: 'search'
-    path: /search.json?
+    path: '/search.json?{0}'
     input: 
       type: key_value
       params: *sflds
       options: Null
-      param_bind_chain: ["=", "&"]
-      option_bind_chain: ["=", "&"]
-      lazy_key: 'q'
+      syntax:
+        field:
+          bind: '='
+          chain: '&'
+        option: 
+          bind: '='
+          chain: '&'
 
   default: *qry

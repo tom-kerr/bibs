@@ -1,7 +1,7 @@
 namespace:
   'dplav2'
 url:
-  http://api.dp.la/v2
+  'http://api.dp.la/v2'
 
 parameters: &prms
   required: &rqrd
@@ -11,9 +11,11 @@ parameters: &prms
   fields:
     mode: field
     keys: 
-      [callback,
+      [q, 
+      callback,
       isPartOf,
-      provider]
+      provider,
+      facets]
 
     sourceResources:
       title:        {sourceResource.title: ''}
@@ -45,28 +47,27 @@ parameters: &prms
       before:       {sourceResource.date.before: ''}
       after:        {sourceResource.date.after: ''}
 
-
-  #facets:
-    #mode: filter
-    #key: {facets: ''}
-    #parameters:
-      #spatial:
-      #  name:        'sourceResource.spatial.name'
-      #  coordinates: 'sourceResource.spatial.coordinates'
-      #date:
-      #  begin:       'sourceResource.date.begin'
-      #  begin.year:  'sourceResource.date.begin.year'
-      #  begin.month: 'sourceResource.date.begin.month'
-      #  begin.day:   'sourceResource.date.begin.day'
-      #  end:         'sourceResource.date.end'
-      #  end.year:    'sourceResource.date.end.year'
-      #  end.month:   'sourceResource.date.end.month'
-      #  end.day:     'sourceResource.date.end.day'
-      #language:
-      #  name:   'sourceResource.language.name'
-      #subject:  'sourceResource.subject'
+  facets:
+    mode: filter
+    key: {facets: ''}
+    parameters:
+      spatial:
+        spatial:     'sourceResource.spatial.spatial'
+        name:        'sourceResource.spatial.name'
+        coordinates: 'sourceResource.spatial.coordinates'
+      date:
+        begin:       'sourceResource.date.begin'
+        begin.year:  'sourceResource.date.begin.year'
+        begin.month: 'sourceResource.date.begin.month'
+        begin.day:   'sourceResource.date.begin.day'
+        end:         'sourceResource.date.end'
+        end.year:    'sourceResource.date.end.year'
+        end.month:   'sourceResource.date.end.month'
+        end.day:     'sourceResource.date.end.day'
+      language:
+        name:   'sourceResource.language.name'
+      subject:  'sourceResource.subject'
       
-  
   options: &opts
     mode: field
     sort:
@@ -75,17 +76,30 @@ parameters: &prms
 
 api:  
   items: &itms
-    namespace: 'items'
-    path: /items?
+    path: '/items?{0}'
     input:
       type: key_value
       params: *prms
       options: [*opts, page, page_size, facet_size]
       required: *rqrd
       multi_value: True
-      param_bind_chain: ["=", "&"]
-      option_bind_chain: ["=", "&"] 
-      multi_bind_chain: [",", ","] 
-      lazy_key: 'q'
+      syntax:
+        prototype:
+          bind: '='
+          chain: '&'
+        field:
+          bind: '='
+          chain: '&'
+        option:
+          bind: '='
+          chain: '&'
+        filter:
+          bind: '='
+          chain: '&'
+          multi: ','
+          args: ':'
+        multi:
+          bind: ','
+          chain: Null
 
   default: *itms

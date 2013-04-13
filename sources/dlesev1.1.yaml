@@ -1,7 +1,7 @@
 namespace:
   'dlesev1.1'
 url:
-  http://www.dlese.org/dds/services
+  'http://www.dlese.org/dds/services'
 
 parameters: &prms
   verb:
@@ -44,6 +44,16 @@ parameters: &prms
         sortDescendingBy: ' '
     
     UserSearch:
+      required:
+        keys: [s,n]
+      cond_req:
+        keys: 
+          [geoPredicate,
+          geoBBNorth,
+          geoBBSouth,
+          geoBBEast,
+          geoBBWest,
+          geoClause]
       parameters:
         q: ' '
         ky: ' '
@@ -110,12 +120,20 @@ parameters: &prms
 
 api:
   ddsws: &ddsws
-    path: /ddsws1-1?
+    path: '/ddsws1-1?{0}'
     input:
       type: key_value
       params: *prms
       options: [output, callback, transform]
-      param_bind_chain: ["=", "&"]
-      option_bind_chain: ["=", "&"]
-
+      syntax:
+        prototype:
+          bind: '='
+          chain: '&'
+        field:
+          bind: '='
+          chain: '&'
+        option:
+          bind: '='
+          chain: '&'
+      
   default: *ddsws

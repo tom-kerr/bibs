@@ -66,7 +66,7 @@ class Bibs(object):
             if prototype_params is None:
                 return
             for param in prototype_params:
-                for arg in self.query_elements['args']:
+                for arg in self.query_elements['field']:
                     if param in arg['key']:
                         return
             if self.proto_optional:
@@ -76,7 +76,7 @@ class Bibs(object):
             raise Exception('Prototype \'' + proto + 
                             '\' requires atleast one argument.')
         else:
-            if len(self.query_elements['args']) < 1:
+            if len(self.query_elements['field']) < 1:
                 raise Exception(self.__class__.__name__ + '\'s api \''+
                                 self.api+'\' requires atleast one argument.')
 
@@ -90,7 +90,7 @@ class Bibs(object):
 
             required = items['keys']
             
-            if type(required) == dict:
+            if isinstance(required, dict):
                 new_list = []
                 for key in required.keys():
                     new_list.append(key)
@@ -98,7 +98,7 @@ class Bibs(object):
 
             found = []
             for n, r in enumerate(required):
-                for element in self.query_elements['args']:
+                for element in self.query_elements['field']:
                     if r in element['key']:
                         found.append(r)
                         break 
@@ -113,77 +113,98 @@ class Bibs(object):
                                     str(found)+'\'  Required:\''+str(required)+'\'')
 
 
-    def build_prototype_string(self):        
-        if 'prototype' in self.query_elements:
-            self.query_elements['prototype']['string'] = ''
-            value = self.query_elements['prototype']['value']
-            key = self.query_elements['prototype']['key']
-            for k,v in key.items():
-                key[k] += value
-            if self.parse_type == 'json':
-                self.query_elements['prototype']['string'] += re.sub('(^\{|\}$| )', '', 
-                                                                     str(key).replace("'", "\""))
-            else:
-                for k,v in key.items():
-                    self.query_elements['prototype']['string'] += k + self.param_bind_char + v
-
     
-    def build_arg_string(self, e):        
-        for arg in self.query_elements[e]:
+    def build_arg_string(self, mode):        
+        if mode not in self.query_elements:
+            return
+        
+        for arg in self.query_elements[mode]:
             arg['string'] = ''
             key = arg['key']
             value = arg['value']
-            if type(key) == dict:
-                key = self.assign_dict_params(key, value)
+            
+            if isinstance(value, dict): 
+                if value['value']:
+                    if 'args' in self.syntax[mode]:
+                        char = self.syntax[mode]['args']
+                    else:
+                        char = self.syntax[mode]['bind']
+                    value = value['key'] + char + value['value']
+                else:
+                    value = value['key']
+            
+            if isinstance(key, dict):
+                key = self.assign_dict_value(key, value)
                 if self.parse_type == 'json':
                     arg['string'] += ',' + re.sub('(^\{|\}$| )', '', str(key).replace("'", "\""))
                 else:
                     for k,v in key.items():
-                        arg['string'] += k + self.param_bind_char + str(v).replace(' ','')
+                        arg['string'] += k + self.syntax[mode]['bind'] + str(v).replace(' ','')
             else:
                 if self.parse_type == 'json':
                     if value == 'null':
                         arg['string'] += ",\""+key+"\":"+value+""
                     else:
-                        arg['string'] += ",\""+key+"\":\""+urllib2.quote(value)+"\""
+                        arg['string'] += ",\""+key+"\":\""+value+"\""
                 else:
-                    arg['string'] += key + self.param_bind_char + urllib2.quote(value)
-            
+                    if mode=='filter':
+                        arg['string'] += value #+ self.syntax[mode]['chain']
+                    else:
+                        arg['string'] += key + self.syntax[mode]['bind'] + value
+                    
+            #print 'key:', str(key), 'value:', str(value)
+            #print 'string:', arg['string']
+
+
 
     def build_string(self):
-        self.build_prototype_string()
-        for e in ('args', 'options'):
-            self.build_arg_string(e)
+        for mode in ('prototype', 'field', 'option', 'filter'):
+            self.build_arg_string(mode)
        
         string = ''
-        if 'prototype' in self.query_elements:
-            string += self.query_elements['prototype']['string']
-            if self.parse_type != 'json':
-                string += self.param_chain_char
-        if 'args' in self.query_elements:
-            for num, arg in enumerate(self.query_elements['args']):
-                string += arg['string']
-                if self.parse_type != 'json' and len(self.query_elements['args']) > 0:
-                    if num < len(self.query_elements['args']):
-                        string += self.param_chain_char
-        if 'options' in self.query_elements:
-            for num, option in enumerate(self.query_elements['options']):
-                string += option['string']
-                if self.parse_type != 'json' and len(self.query_elements['options']) > 0:
-                    if num < len(self.query_elements['options']):
-                        string += self.option_chain_char
+        for mode in ('prototype','field', 'filter', 'option'):
+            if mode in self.query_elements:
 
+                if self.syntax and mode in self.syntax:
+                    bind = self.syntax[mode]['bind'] if self.syntax[mode]['bind'] else ''
+                    chain = self.syntax[mode]['chain'] if self.syntax[mode]['chain'] else ''
+                    if 'multi' in self.syntax[mode]:
+                        multi = self.syntax[mode]['multi'] if self.syntax[mode]['multi'] else ''
+                    else:
+                        multi = ''
+                else:
+                    bind = chain = multi = ''
+
+                for num, arg in enumerate(self.query_elements[mode]):                    
+                    if self.parse_type == 'json':
+                        string += arg['string']
+                    else:
+                        if mode == 'filter':
+                            if num == 0:
+                                string += arg['key'] + bind + arg['string'] + multi
+                            elif num < len(self.query_elements[mode])-1:
+                                string += arg['string'] + multi
+                            else:
+                                string += arg['string'] + chain
+                        else:
+                            string += arg['string']
+                            if num < len(self.query_elements[mode]):
+                                string += chain
+                        
         if self.parse_type == 'json':
-            self.query_string = self.url + self.path + '{' + string + '}'
+            string = string.lstrip(',')
+            self.query_string = self.url + self.path.format('{' + string + '}')
         else:
-            self.query_string = (self.url + self.path + 
-                                 string.rstrip(self.option_chain_char).
-                                        rstrip(self.param_chain_char))
+            for mode in ('prototype','field', 'filter', 'option'):
+                if mode in self.syntax:
+                    string = string.rstrip(self.syntax[mode]['bind'])
+                    string = string.rstrip(self.syntax[mode]['chain'])
+            self.query_string = self.url + self.path.format(string)
 
         #print '\n' + self.query_string + '\n'
         
 
-    def assign_list_params(self, param_list, value):
+    def assign_list_value(self, param_list, value):
         if len(param_list) == 1:
             prefix = param_list.pop()
         else: 
@@ -195,41 +216,31 @@ class Bibs(object):
                 v = prefix + v
             param_list.append(v)
         return param_list
-        
 
-    def assign_dict_params(self, param_dict, value):
+
+    def assign_dict_value(self, param_dict, value):
         for param, entry in param_dict.items():            
-            if type(entry) == str:
+            if isinstance(entry, str):
                 if self.multi_value:
-                    value = re.sub('(?<!\\\\)\|', self.multi_bind_char, value)
+                    value = re.sub('(?<!\\\\)\|', self.syntax['multi']['bind'], value)
                 param_dict[param] += urllib2.quote(str(value))
                 param_dict[param] = param_dict[param].lstrip(' ').rstrip(' ')
                 return param_dict
-            elif type(entry) == list:
-                param_dict[param] = self.assign_list_params(entry, value)
+            elif isinstance(entry, list):
+                param_dict[param] = self.assign_list_value(entry, value)
                 return param_dict
             else:
-                param_dict[param] = self.assign_dict_params(entry, value)
+                param_dict[param] = self.assign_dict_value(entry, value)
                 return param_dict
 
 
-    def parse_prototype(self, arg, value):
+    def parse_with_prototype(self, arg, value):
         if 'parameters' not in self.prototype:
             raise Exception('Invalid prototype \''+self.prototype+'\'')
-
         path, entry = self.find_param(arg, self.prototype['parameters'])
         if entry is None:
             raise Exception('Invalid parameter \''+str(arg)+'\'')
         root = path[0]
-
-        #if 'mode' in entry:
-        #    if entry['mode'] == 'field':
-        #        path, entry = self.find_param(value, entry)
-        #        if not entry:
-        #            raise Exception('Invalid parameter \''+str(value)+'\'')                
-        #        self.query_elements['args'].append({'key': root, 
-        #                                            'value': entry})
-        #        return
 
         key = {}
         def get_nested(d, l, e):
@@ -243,54 +254,45 @@ class Bibs(object):
                     d[item] = e
                 return d
         key = get_nested(key, path, entry)
-                
-        if root == 'options':
-            self.query_elements['options'].append({'key': entry, 'value': value})
-        else:
-            self.query_elements['args'].append({'key': key, 
-                                                'value': value})
+
+        self.query_elements['field'].append({'key': key, 
+                                             'value': value})
 
 
     def parse_input_options(self):
-        self.query_elements['options'] = []
+        self.query_elements['option'] = []
         for elements in self.input_options:
             arg = elements[:-1]
             value = [elements[-1],][0]
             path, entry = self.find_param(arg, self.options)            
             if not entry:
                     raise Exception('Invalid parameter \''+str(arg)+'\'')                
-            self.query_elements['options'].append({'key': entry, 'value': value})
+            self.query_elements['option'].append({'key': entry, 'value': value})
 
 
     def parse_input_elements(self):
-        self.query_elements['args'] = []
+        self.query_elements['field'] = []
+        self.query_elements['filter'] = []
         for elements in self.input_elements:
 
             arg = elements[:-1]
             value = [elements[-1],][0]
             
             if self.params is None:
-                self.query_elements['args'].append({'key':'', 'value':value})
+                self.add_field_arg('', value) 
                 continue
             
-            if len(arg) == 1 and arg[0] == '' and self.lazy_key is not None:
-                self.query_elements['args'].append({'key': self.lazy_key,
-                                                    'value': value})
-                continue
-
             if self.global_required:
-                path, entry = self.find_param(arg, self.global_required)
-                if entry:
-                    self.query_elements['args'].append({'key': entry,
-                                                        'value': value})
+                if self.parse_with_global_required(arg, value):
                     continue
 
             if self.prototype:
-                self.parse_prototype(arg, value)
+                self.parse_with_prototype(arg, value)
             else:
                 path, entry = self.find_param(arg, self.params)                            
                 if not entry:
                     raise Exception('Invalid parameter \''+str(arg)+'\'')                
+                
                 root = path[0]                
 
                 if 'mode' in self.params[root]:
@@ -299,54 +301,93 @@ class Bibs(object):
                     mode = self.params['mode']
                 
                 if mode == 'field':
-                    if type(entry) is list:
-                        entry = entry[-1]
-                    self.query_elements['args'].append({'key':entry, 'value':value})
-                
-                #if mode == 'filter':
-                #    self.query_elements['args'].append({'key': path[0], 'value': entry})
-
+                    self.add_field_arg(entry, value)                
+                if mode == 'filter':
+                    self.add_filter_arg(path, entry, value)
                 elif mode == 'prototype':                    
-                    path, proto_entry = self.find_param((value,), entry)
-                    if not proto_entry:
-                        raise Exception('Invalid prototype \''+str(value)+'\'')
-                    proto_param = path[0]
-                    self.prototype = proto_entry
+                    self.parse_prototype(entry, value)
 
-                    if 'required' in self.prototype:
-                        self.proto_required = self.prototype['required']
-                    if 'cond_req' in self.prototype:
-                        self.proto_cond_req = self.prototype['cond_req']
-                    if 'optional' in self.prototype:
-                        self.proto_optional = self.prototype['optional']
-                        
-                    if 'key' in entry:
-                        key = entry['key']
-                    else:
-                        key = proto_entry['key']
-                   
-                    self.query_elements['prototype'] = {'key': key, 
-                                                        'value': proto_param}           
-        ##print '\n' + str(self.query_elements)
+        #print '\n' + str(self.query_elements)
+
+
+    def parse_with_global_required(self, arg, value):
+        path, entry = self.find_param(arg, self.global_required)
+        if entry:
+            self.query_elements['field'].append({'key': entry,
+                                                 'value': value})
+            return True
+        else:
+            return False
+
+
+    def add_filter_arg(self, path, entry, value):
+        entry_dict = None
+        if isinstance(entry, (dict, list)):
+            path, entry = self.find_param((value,), entry)
+            entry_dict = {'key': path[0], 'value': entry}
+        else:
+            entry_dict = {'key': path[0], 'value':
+                              {'key':entry, 'value': value}}
+        if entry_dict is not None:
+            self.query_elements['filter'].append(entry_dict)
+
+
+    def add_field_arg(self, entry, value):
+        if isinstance(entry, list):
+            entry = entry[-1]
+        self.query_elements['field'].append({'key':entry, 'value':value})
+
+
+    def parse_prototype(self, entry, value):
+        if 'prototype' not in self.query_elements:
+            self.query_elements['prototype'] = []
+        path, proto_entry = self.find_param((value,), entry)
+        if not proto_entry:
+            raise Exception('Invalid prototype \''+str(value)+'\'')
+        proto_param = path[0]
+        self.prototype = proto_entry
+        
+        if 'required' in self.prototype:
+            self.proto_required = self.prototype['required']
+        if 'cond_req' in self.prototype:
+            self.proto_cond_req = self.prototype['cond_req']
+        if 'optional' in self.prototype:
+            self.proto_optional = self.prototype['optional']
+            
+        if 'key' in entry:
+            key = entry['key']
+        else:
+            key = proto_entry['key']
+                
+        self.query_elements['prototype'].append({'key': key, 
+                                                 'value': proto_param})
         
     
     def find_param(self, args, params):   
-        if type(args) == str:
+        if isinstance(args, str):
             args = [args,]
         path = []
         entry = None
+
+        def flatten_path(_p, _path):
+            for i in _p:
+                if isinstance(i, list):
+                    _path = flatten_path(i, _path)
+                else:
+                    if i not in _path:
+                        _path.append(i)
+            return _path
+
         for arg in args:
             arg = re.escape(arg)
             entry = self.search_entries(arg, params)                        
             if entry:
                 params = entry
-                if type(entry) == list:
+                if isinstance(entry, list):
                     p = entry.pop(0)
-                    if type(p) == str:
+                    if isinstance(p, str):
                         p = [p]
-                    for i in p:
-                        if i not in path:
-                            path.append(i)
+                    path = flatten_path(p, path)
                     entry = entry[0]                                        
         if entry is not None:
             return [path, entry]
@@ -357,9 +398,9 @@ class Bibs(object):
         if params == []:
             params = list
         match = None
-        if type(params) == dict:
+        if isinstance(params, dict):
             match = self.find_dict_entry(arg, params)
-        elif type(params) in (list, tuple):
+        elif isinstance(params, (list, tuple)):
             match = self.find_list_entry(arg, params)                    
         return match
 
@@ -369,16 +410,15 @@ class Bibs(object):
             match = re.match('^(?i)'+arg+'$', param)
             if match:
                 path = param
-                return [path, entry]        
-    
+                return [path, entry]          
         if not match:
             for param, entry in params.items():
                 match = self.search_entries(arg, entry)
                 if match:
-                    if type(match) == list:
+                    if isinstance(match, list):
                         path = [param, match.pop(0)]
                         match = match[-1]
-                    elif type(match) == str:
+                    elif isinstance(match, str):
                         path = param
                     return [path, match]
         return None
@@ -386,12 +426,12 @@ class Bibs(object):
 
     def find_list_entry(self, arg, params):
         for param in params:
-            if type(param) == dict:
+            if isinstance(param, dict):
                 match = self.find_dict_entry(arg, param)        
                 if match:
                     path, entry = match
                     return [path, entry]
-            elif type(param) in (list, tuple):
+            elif isinstance(param, (list, tuple)):
                 match = self.find_list_entry(arg, param)
                 if entry:
                     path, entry = match
@@ -401,30 +441,6 @@ class Bibs(object):
                 if match:
                     return param
     
-
-    def return_dict_entry(self, arg, params):
-        for param, entry in params.items():
-            match = re.match('^(?i)'+arg+'$', param)
-            if match:
-                return entry
-            else:
-                match = self.get_param_entry(arg, entry)
-                if match:
-                    return match
-        return False
-
-
-    def return_list_entry(self, arg, list):
-        for item in list:
-            if type(item) == dict:
-                match = self.return_dict_entry(arg, item)
-                if match:
-                    return match
-            else:
-                match = re.match('^(?i)'+arg+'$', item)
-                if match:
-                    return item
-
 
     def create_query_object(self, input_string, source, api):
         query_class = type(source['namespace'], (Bibs,), {})
@@ -449,43 +465,30 @@ class Bibs(object):
             query_object.global_required = source['api'][api]['input']['required']
         else:
             query_object.global_required = None
-        
-        if 'param_bind_chain' in source['api'][api]['input']:
-            query_object.param_bind_char   = source['api'][api]['input']['param_bind_chain'][0]
-            query_object.param_chain_char  = source['api'][api]['input']['param_bind_chain'][1]
-        else:
-            query_object.param_bind_char   = None
-            query_object.param_chain_char  = None
 
-        if 'option_bind_chain' in source['api'][api]['input']:
-            query_object.option_bind_char  = source['api'][api]['input']['option_bind_chain'][0]
-            query_object.option_chain_char = source['api'][api]['input']['option_bind_chain'][1]
-        else:
-            query_object.option_bind_char  = None
-            query_object.option_chain_char = None
-            
         if 'multi_value' in source['api'][api]['input']:
-            query_object.multi_value      = source['api'][api]['input']['multi_value']
-            query_object.multi_bind_char  = source['api'][api]['input']['multi_bind_chain'][0]
-            query_object.multi_chain_char = source['api'][api]['input']['multi_bind_chain'][1]
+            query_object.multi_value = True
         else:
             query_object.multi_value = False
-            query_object.multi_bind_char  = None
-            query_object.multi_chain_char = None
-
-        if 'lazy_key' in source['api'][api]['input']:
-            query_object.lazy_key = source['api'][api]['input']['lazy_key']
+            
+        if 'syntax' in source['api'][api]['input']:
+            query_object.syntax = {}
+            source_syntax = source['api'][api]['input']['syntax']
+            for mode in ('prototype', 'field', 'option', 'filter', 'multi'):
+                if mode in source_syntax:
+                    query_object.syntax[mode] = source_syntax[mode]
+                else:
+                    query_object.syntax[mode] = {'bind': None, 'chain': None}
         else:
-            query_object.lazy_key = None
+            query_object.syntax = None
 
-        query_object.format_input_string()
-        
+        query_object.format_input_string()        
         return query_object
 
 
     def format_input_string(self):
         input_elements = input_options = None
-        elements = re.split('(?<!\\\\)@', self.input_string)        
+        elements = re.split('(?<!\\\\)@', self.input_string)                
         if len(elements) == 2:
             input_elements, input_options = elements
         elif len(elements) == 1:

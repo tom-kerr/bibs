@@ -1,7 +1,7 @@
 namespace:
   'googlebooks'
 url:
-  http://books.google.com
+  'http://books.google.com'
 
 parameters:
   library_identifiers_upper: &libidsup
@@ -10,11 +10,17 @@ parameters:
 
 api:
   books: &bks
-    path: /books?bibkeys=
+    path: '/books?bibkeys={0}'
     input:
       type: key_value
       params: *libidsup
       options: [callback, jscmd]
-      param_bind_chain: [':', ',']
-      option_bind_chain: ['=', '&']
+      syntax:
+        field:
+          bind: ':'
+          chain: ','
+        option:
+          bind: '='
+          chain: '&'
+
   default: *bks

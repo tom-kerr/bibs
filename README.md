@@ -35,7 +35,7 @@ Or,
 
 Optional arguments are to be preceded by an **@**, like:
 
-	 b.search('types->edition:title->Macbeth@publish_date->null:limit->5', 'openlibrary', 'query')
+	 b.search('types->edition:title->Macbeth @publish_date->null:limit->5', 'openlibrary', 'query')
 
 where **publish_date->null** will request data from the **publish_date** field for all editions found whose title is 'Macbeth', and **limit->5** will limit the results to five.  
 
