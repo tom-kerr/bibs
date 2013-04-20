@@ -4,9 +4,10 @@ url:
   'http://catalog.hathitrust.org'
 
 parameters:  
+
   library_identifiers_lower: &libidslow
     mode: field
-    keys: [isbn, lccn, oclc, olid]
+    keywords: [isbn, lccn, oclc, olid]
 
 api:
   volumes_brief: &volsbrief
@@ -22,6 +23,8 @@ api:
         option:
           bind: '='
           chain: '?'
+    output:
+      default: json
 
   multi_volumes_brief: &multivolsbrief
     path: '/api/volumes/brief/json/{0}'
@@ -40,6 +43,8 @@ api:
         multi:
           bind: '|'
           chain: Null
+    output:
+      default: json
 
   volumes_full: &volsfull
     path: '/api/volumes/full/{0}.json'
@@ -54,6 +59,8 @@ api:
         option:
           bind: '='
           chain: '?'
+    output:
+      default: json
 
   multi_volumes_full: &multivolsfull
     path: '/api/volumes/full/json/{0}'
@@ -72,5 +79,7 @@ api:
         multi:
           bind: '|'
           chain: Null
+    output:
+      default: json
 
   default: *volsbrief

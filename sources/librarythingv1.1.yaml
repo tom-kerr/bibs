@@ -3,12 +3,12 @@ namespace:
 url:
   'http://www.librarything.com/services'
 
-parameters: &prms
-  required: &rqrd
+parameters: 
+  required: &required
     mode: field
-    keys: [apikey]
+    keywords: [apikey]
     
-  ck:
+  ck: &ck
     mode: prototype
     key: {method: 'librarything.ck.'}
     
@@ -26,7 +26,7 @@ parameters: &prms
         authorcode: ' '
         name: ' '
           
-  local:
+  local: &local
     mode: prototype
     key: {method: 'librarything.local.'}
       
@@ -77,15 +77,15 @@ parameters: &prms
         measure: ' '
     
 api:
-  rest: &rst
+  rest: &rest
     path: '/rest/1.1/?{0}'
     input:
       type: key_value
-      params: *prms
+      params: {ck: *ck, local: *local}
       options: Null
-      required: *rqrd
+      required: *required
       syntax:
-        protoype:
+        prototype:
           bind: '='
           chain: '&'
         field:
@@ -94,5 +94,7 @@ api:
         option:
           bind: '='
           chain: '&'
+    output:
+      default: xml
 
-  default: *rst
+  default: *rest

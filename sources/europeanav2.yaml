@@ -3,19 +3,20 @@ namespace:
 url:
   'http://preview.europeana.eu/api/v2'
 
-parameters: &prms
-  required: &rqrd
+parameters:
+
+  required: &required
     mode: field
-    keys: [wskey, query]
+    keywords: [wskey, query]
 
 api:
-  search: &srch
+  search: &search
     path: '/search.json?{0}'
     input:
       type: key_value
-      params: &prms
+      params: *required
       options: [callback, profile, qf, rows, start]
-      required: *rqrd
+      required: *required
       syntax:
         field:
           bind: '='
@@ -23,5 +24,7 @@ api:
         option:
           bind: '='
           chain: '&'
-      
+    output:
+      default: json
+
   default: *srch

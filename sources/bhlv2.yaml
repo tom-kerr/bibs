@@ -3,20 +3,23 @@ namespace:
 url:
   'http://biodiversitylibrary.org/api2'
 
-parameters: &prms
-  required: &rqrd
+parameters: 
+
+  required: &required
     mode: field
-    keys: [apikey]
+    keywords: [apikey]
 
   identifiers_1: &ids1
     mode: field
-    keys: [barcode, ia]
+    keywords: [barcode, ia]
 
   identifiers_2: &ids2
     mode: field
-    keys: [doi, oclc, issn, isbn, lccn, ddc, nal, nlm, coden]
+    keywords: 
+      [doi, oclc, issn, isbn, 
+      lccn, ddc, nal, nlm, coden]
       
-  methods:
+  methods: &methods
     mode: prototype
     key: {'op': ''}
 
@@ -41,6 +44,7 @@ parameters: &prms
 
     GetAuthorTitles:
       parameters:
+
         creatorid: ' '
 
     GetCollections: 
@@ -189,13 +193,13 @@ parameters: &prms
         title: ' '
 
 api:
-  query: &qry
+  query: &query
     path: '/httpquery.ashx?{0}'
     input:
       type: key_value
-      params: *prms
+      params: {methods: *methods}
       options: [format, callback]
-      required: *rqrd
+      required: *required
       syntax:
         prototype:
           bind: '='
@@ -206,5 +210,7 @@ api:
         option:
           bind: '='
           chain: '&'
+    output:
+      default: xml
 
-  default: *qry
+  default: *query

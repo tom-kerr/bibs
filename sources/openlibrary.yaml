@@ -1,20 +1,35 @@
 namespace:
   'openlibrary'
+help: | 
+  -------------
+   OpenLibrary 
+  -------------
+
+  APIs: 
+    volumes_brief
+    multi_volumes_brief
+    volumes_full
+    multi_volumes_full
+    books
+    query
+    search
+  
 url: 
   'http://openlibrary.org'
 
-parameters: &prms
-  searchfields: &sflds
+parameters:
+
+  searchfields: &searchfields
     mode: field
-    keys:
+    keywords:
       [q, 
       title,
       author,
       subject]
 
-  metafields: &mflds
+  metafields: &metafields
     mode: field
-    keys: 
+    keywords: 
       [
       #IDENTIFICATION
       id,
@@ -110,13 +125,13 @@ parameters: &prms
     
   library_identifiers_upper: &libidsup
     mode: field
-    keys: [ISBN, LCCN, OCLC, OLID]
+    keywords: [ISBN, LCCN, OCLC, OLID]
 
   library_identifiers_lower: &libidslow
     mode: field
-    keys: [isbn, lccn, oclc, olid]
+    keywords: [isbn, lccn, oclc, olid]
 
-  types:
+  types: &types
     mode: prototype
     key: {'type': '/type/'}
 
@@ -411,6 +426,13 @@ parameters: &prms
 api: 
   volumes_brief: &volsbrief
     path: '/api/volumes/brief/{0}.json'
+    help: | 
+      --------------
+       volumes_brief
+      --------------
+      
+      <FIELD>:<PARAMETER> ...<OPTIONS>
+
     input:
       type: key_value
       params: *libidslow
@@ -422,9 +444,18 @@ api:
         option:
           bind: '='
           chain: '?'
+    output:
+      default: json
 
   multi_volumes_brief: &multivolsbrief
     path: '/api/volumes/brief/json/{0}'
+    help: |
+      --------------------
+       mutli_volumes_brief
+      --------------------
+      
+      <FIELD>:<PARAMETER> ...<OPTIONS>
+
     input:
       type: key_value
       params: *libidslow
@@ -440,9 +471,18 @@ api:
         multi:
           bind: '|'
           chain: Null
+    output:
+      default: json
       
   volumes_full: &volsfull
     path: '/api/volumes/full/{0}.json'
+    help: | 
+      --------------
+       volumes_full
+      --------------
+      
+      <FIELD>:<PARAMETER> ...<OPTIONS>
+
     input:
       type: key_value
       params: *libidslow
@@ -454,9 +494,18 @@ api:
         option:
           bind: '='
           chain: '?'
+    output:
+      default: json
 
   multi_volumes_full: &multivolsfull
     path: '/api/volumes/full/json/{0}'
+    help: |
+      --------------------
+       mutli_volumes_full
+      --------------------
+      
+      <FIELD>:<PARAMETER> ...<OPTIONS>
+
     input:
       type: key_value
       params: *libidslow
@@ -471,9 +520,17 @@ api:
         multi:
           bind: '|'
           chain: Null
+    output:
+      default: json
 
   books: &bks
     path: '/api/books?bibkeys={0}'
+    help: |
+      -------
+       books
+      -------
+      
+      <FIELD>:<PARAMETER> ...<OPTIONS>
     input: 
       type: key_value
       params: *libidsup
@@ -485,19 +542,35 @@ api:
         option:
           bind: '='
           chain: '&'
+    output:
+      default: javascript
 
-  query: &qry
+  query: &query
     path: '/query.json?query={0}'
+    help: |
+      -------
+       query
+      -------
+
+      <PROTOTYPE>:<PARAMETER> ...<OPTIONS>  
     input:
       type: json
-      params: *prms
-      options: [limit, offset, "*", *mflds]
+      params: {types: *types}
+      options: [limit, offset, "*", *metafields]
+    output:
+      default: json
       
-  search: &srch
+  search: &search
     path: '/search.json?{0}'
+    help: |
+      --------
+       search
+      --------
+
+      <FIELD>:<PARAMETER> 
     input: 
       type: key_value
-      params: *sflds
+      params: *searchfields
       options: Null
       syntax:
         field:
@@ -506,5 +579,7 @@ api:
         option: 
           bind: '='
           chain: '&'
+    output:
+      default: json
 
-  default: *qry
+  default: *query

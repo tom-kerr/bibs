@@ -3,10 +3,10 @@ namespace:
 url: 
   'http://api.dp.la/v1'
 
-parameters: &prms
-  fields: &flds
+parameters: 
+  fields: &fields
     mode: field
-    keys: 
+    keywords: 
       [q,
       title,
       description,
@@ -30,11 +30,11 @@ parameters: &prms
     sort_by: {sort_by: ''}
   
 api:
-  items: &itms
+  items: &items
     path: '/items?{0}'
     input:
       type: key_value
-      params: *prms
+      params: *fields
       options: [page, page_size]
       syntax:
         field:
@@ -43,5 +43,7 @@ api:
         option:
           bind: '='
           chain: '&'
-      
-  default: *itms
+    output:
+      default: json
+
+  default: *items

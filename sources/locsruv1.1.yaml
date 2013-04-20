@@ -3,14 +3,15 @@ namespace:
 url:
   'http://z3950.loc.gov:7090'
 
-parameters: &prms
-  required: &rqrd
-    mode: field
-    keys: [query]
+parameters: 
 
-  options: &opts
+  required: &required
     mode: field
-    keys:
+    keywords: [query]
+
+  options: &options
+    mode: field
+    keywords:
       [startRecord,
       maximumRecords,
       recordPacking,
@@ -22,13 +23,13 @@ parameters: &prms
       extraRequestData]
           
 api:
-  voyager: &vygr
+  voyager: &voyager
     path: '/voyager?version=1.1&operation=searchRetrieve&{0}'
     input:
       type: key_value
-      params: *prms
-      options: *opts
-      required: *rqrd
+      params: 
+      options: *options
+      required: *required
       multi_value: True
       syntax:
         field:
@@ -40,5 +41,7 @@ api:
         multi:
           bind: ','
           chain: Null
+    output:
+      default: xml
 
-  default: *vygr
+  default: *voyager

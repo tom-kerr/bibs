@@ -1,26 +1,84 @@
 namespace:
   'googlebooks'
 url:
-  'http://books.google.com'
+  'https://googleapis.com'
 
 parameters:
-  library_identifiers_upper: &libidsup
-    mode: field
-    keys: [ISBN, LCCN, OCLC, OLID]
 
+  query: &q
+    mode: field
+    keywords: [q]
+
+  keywords: &keywords
+    mode: filter
+    syntax:
+      bind: ':'
+      chain: '+'
+    keywords: 
+      [intitle,
+      inauthor,
+      inpublisher,
+      subject,
+      isbn,
+      oclc,
+      lccn]
+
+  filters: &filters
+    mode: field
+    key: {filter: ''}
+    keywords:
+      [partial,
+      full,
+      free-ebooks,
+      paid-ebooks,
+      ebooks]
+
+  download: &download
+    mode: field
+    key: 'download'
+    keywords: [epub]
+
+  pagination: &pagination
+    mode: field
+    cond_req: [startIndex, maxResults]
+    keywords: [startIndex, maxResults]
+
+  print_type: &printtype
+    mode: field
+    keywords: [all, books, magazines]
+
+  projection: &projection
+    mode: field
+    keywords: [full, lite]
+    
+  sorting: &sorting
+    mode: field
+    orderBy: 
+      relevance: {orderBy: 'relevance'}
+      newest: {orderBy: 'newest'}
+      
+  
 api:
-  books: &bks
-    path: '/books?bibkeys={0}'
+  volumes: &books
+    path: '/books/v1/volumes?{}'
     input:
       type: key_value
-      params: *libidsup
-      options: [callback, jscmd]
+      params: {query: *q, keywords: *keywords, filters: *filters}
+      options: 
+        [api_key, 
+        *download, 
+        *pagination, 
+        *printtype, 
+        *projection, 
+        *sorting]
       syntax:
         field:
-          bind: ':'
-          chain: ','
+          bind: '='
+          chain: '&'
         option:
           bind: '='
           chain: '&'
+    output:
+      default: json
 
-  default: *bks
+  default: *books

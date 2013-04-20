@@ -1,21 +1,29 @@
 namespace:
   'dplav2'
+help: | 
+   --------------------------------------------
+    Digital Public Library of America Version 2
+   --------------------------------------------
+
+   APIs: 
+     items
+
 url:
   'http://api.dp.la/v2'
 
-parameters: &prms
-  required: &rqrd
+parameters:
+
+  required: &required
     mode: field
-    keys: [api_key]
+    keywords: [api_key]
   
-  fields:
+  fields: &fields
     mode: field
-    keys: 
+    keywords: 
       [q, 
       callback,
       isPartOf,
-      provider,
-      facets]
+      provider]
 
     sourceResources:
       title:        {sourceResource.title: ''}
@@ -47,9 +55,14 @@ parameters: &prms
       before:       {sourceResource.date.before: ''}
       after:        {sourceResource.date.after: ''}
 
-  facets:
-    mode: filter
-    key: {facets: ''}
+  facets: &facets
+    mode: field
+    key: 'facets'
+    syntax:
+      bind: '='
+      chain: '&'
+      multi: ','
+      args: ':'
     parameters:
       spatial:
         spatial:     'sourceResource.spatial.spatial'
@@ -67,21 +80,21 @@ parameters: &prms
       language:
         name:   'sourceResource.language.name'
       subject:  'sourceResource.subject'
-      
-  options: &opts
+            
+  sort: &sort
     mode: field
-    sort:
-      by: {sort_by: ' '}
-      order: {sort_order: ' '}
+    by: {sort_by: ''}
+    order: {sort_order: ''}
+      
 
 api:  
-  items: &itms
+  items: &items
     path: '/items?{0}'
     input:
       type: key_value
-      params: *prms
-      options: [*opts, page, page_size, facet_size]
-      required: *rqrd
+      params: {'fields': *fields, 'facets': *facets}
+      options: [*sort, page, page_size, facet_size]
+      required: *required
       multi_value: True
       syntax:
         prototype:
@@ -93,13 +106,10 @@ api:
         option:
           bind: '='
           chain: '&'
-        filter:
-          bind: '='
-          chain: '&'
-          multi: ','
-          args: ':'
         multi:
           bind: ','
           chain: Null
+    output:
+      default: json
 
-  default: *itms
+  default: *items

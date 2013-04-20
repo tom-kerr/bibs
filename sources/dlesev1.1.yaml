@@ -3,16 +3,17 @@ namespace:
 url:
   'http://www.dlese.org/dds/services'
 
-parameters: &prms
-  verb:
+parameters: 
+
+  verb: &verb
     mode: prototype
     key: {verb: ''}
 
     Search:
       required:
-        keys: [s,n]
+        keywords: [s,n]
       cond_req:
-        keys: 
+        keywords: 
           [geoPredicate,
           geoBBNorth,
           geoBBSouth,
@@ -45,9 +46,9 @@ parameters: &prms
     
     UserSearch:
       required:
-        keys: [s,n]
+        keywords: [s,n]
       cond_req:
-        keys: 
+        keywords: 
           [geoPredicate,
           geoBBNorth,
           geoBBSouth,
@@ -73,7 +74,7 @@ parameters: &prms
         
     GetRecord:
       required:
-        keys: [id]
+        keywords: [id]
       parameters:
         id: ' '
         xmlFormat: ' '
@@ -84,7 +85,7 @@ parameters: &prms
 
     ListTerms:
       required:
-        keys: [field]
+        keywords: [field]
       parameters: 
         field: ' '
         
@@ -105,13 +106,13 @@ parameters: &prms
 
     ListXmlFormats:
       optional:
-        keys: [id]
+        keywords: [id]
       parameters: 
         id: ' '
 
     UrlCheck:
       required:
-        keys: [url]
+        keywords: [url]
       parameters:
         url: ' '
 
@@ -123,7 +124,7 @@ api:
     path: '/ddsws1-1?{0}'
     input:
       type: key_value
-      params: *prms
+      params: {verb: *verb}
       options: [output, callback, transform]
       syntax:
         prototype:
@@ -135,5 +136,7 @@ api:
         option:
           bind: '='
           chain: '&'
+    output:
+      default: xml
       
   default: *ddsws
