@@ -1,12 +1,11 @@
 from distutils.core import setup
-import sys
-
-major, minor = sys.version_info[0], sys.version_info[1]
-version = 'python' + str(major) + '.' + str(minor)
 
 setup(name='bibs',
-      py_modules=['bibs'],
-      requires=['yaml'],
-      data_files=[('lib/'+ version +'/dist-packages/bibs/sources/', 
-                   ['sources/openlibrary.yaml'])]
-      )
+      author='Tom Kerr',
+      author_email='thomkerr@gmail.com',
+      url='https://github.com/reklaklislaw/bibs',
+      description='A python module with the goal of a shared syntax for querying public Bibliographic APIs and a simple and flexible extension model.',
+      packages=['bibs'],
+      package_dir={'bibs': 'src/bibs'},
+      package_data={'bibs': ['sources/*.yaml']},
+      requires=['lxml', 'yaml', 'xmltodict', 'dict2xml'])
