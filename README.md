@@ -64,5 +64,5 @@ Currently supported Sources:
 Installation
 -----
 
-1) Download and unpack the zip.
-2) pip install bibs/ -r bibs/requirements.txt
+- Download and unpack the zip.
+- pip install bibs/ -r bibs/requirements.txt
