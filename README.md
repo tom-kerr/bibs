@@ -10,7 +10,7 @@ A python module with the goal of a shared syntax for querying public Bibliograph
 Example
 -----
 
-	from bibs import Bibs
+	from bibs.bibs import Bibs
 
 	b = Bibs()
 	results = b.search("title->Tom Sawyer", 'dplav1', 'items')
@@ -65,4 +65,10 @@ Installation
 -----
 
 - Download and unpack the zip.
-- pip install bibs/ -r bibs/requirements.txt
+- "pip install bibs/ -r bibs/requirements.txt" or run "python bibs/setup.py install" and install the dependencies yourself.
+
+Dependencies:
+- lxml
+- PyYAML
+- xmltodict
+- dict2xml
