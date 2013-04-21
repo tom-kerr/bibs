@@ -7,7 +7,8 @@ A python module with the goal of a shared syntax for querying public Bibliograph
 
 (in development)
 
-<h2>Example</h2>
+Example
+-----
 
 	from bibs import Bibs
 
@@ -57,3 +58,11 @@ Currently supported Sources:
 - locsruv1.1       (<a href='http://loc.gov/standards/sru'>Library of Congress SRU</a>)
 - librarythingv1.1 (<a href='http://www.librarything.com'>Library Thing</a>)
 - dlesev1.1        (<a href='http://www.dlese.org'>Digital Library for Earth System Education</a>)
+
+
+
+Installation
+-----
+
+1) Download and unpack the zip.
+2) pip install bibs/ -r bibs/requirements.txt
