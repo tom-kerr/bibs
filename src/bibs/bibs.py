@@ -21,8 +21,9 @@ class Bibs(object):
 
 
     def find_sources(self):
-        self.source_list = glob.glob(sys.path[1] + '/' + Bibs.source_dir + '*.yaml')
-        
+        self.source_list = glob.glob(os.path.dirname(__file__) + 
+                                     '/' + Bibs.source_dir + '*.yaml')
+
 
     def load_source(self, namespace):
         for source_file in self.source_list:

@@ -67,7 +67,7 @@ Installation
 - Download and unpack the zip.
 - "pip install bibs/ -r bibs/requirements.txt" or run "python bibs/setup.py install" and install the dependencies yourself.
 
-Dependencies:
+Dependencies
 - lxml
 - PyYAML
 - xmltodict
