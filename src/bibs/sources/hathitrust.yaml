@@ -1,5 +1,19 @@
 namespace:
   'hathitrust'
+help: | 
+   -----------------------------
+    Hathi Trust Digital Library
+   -----------------------------
+
+   APIs: 
+     volumes_brief
+     multi_volumes_brief
+     volumes_full
+     multi_volumes_full
+
+  Documentation:
+    http://www.hathitrust.org/bib_api
+
 url:
   'http://catalog.hathitrust.org'
 
@@ -11,6 +25,13 @@ parameters:
 
 api:
   volumes_brief: &volsbrief
+    help: | 
+      --------------
+       volumes_brief
+      --------------
+      
+      <FIELD>:<PARAMETER> ...<OPTIONS>
+    namespace: 'volumes_brief'
     path: '/api/volumes/brief/{0}.json'
     input:
       type: key_value
@@ -27,6 +48,13 @@ api:
       default: json
 
   multi_volumes_brief: &multivolsbrief
+    help: |
+      --------------------
+       mutli_volumes_brief
+      --------------------
+      
+      <FIELD>:<PARAMETER> ...<OPTIONS>
+    namespace: 'multi_volumes_brief'
     path: '/api/volumes/brief/json/{0}'
     input:
       type: key_value
@@ -47,6 +75,13 @@ api:
       default: json
 
   volumes_full: &volsfull
+    help: | 
+      --------------
+       volumes_full
+      --------------
+      
+      <FIELD>:<PARAMETER> ...<OPTIONS>
+    namespace: 'volumes_full'
     path: '/api/volumes/full/{0}.json'
     input:
       type: key_value
@@ -63,6 +98,13 @@ api:
       default: json
 
   multi_volumes_full: &multivolsfull
+    help: |
+      --------------------
+       mutli_volumes_full
+      --------------------
+      
+      <FIELD>:<PARAMETER> ...<OPTIONS>
+    namespace: 'multi_volumes_full'
     path: '/api/volumes/full/json/{0}'
     input:
       type: key_value

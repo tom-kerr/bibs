@@ -49,7 +49,7 @@ Each source is modeled in YAML, providing the information necessary to parse que
 
 Currently supported Sources:
 
-- dpla(v1|v2)      (<a href='http://dp.la'>Digital Public Library of America</a>)
+- dplav2           (<a href='http://dp.la'>Digital Public Library of America</a>)
 - bhlv2            (<a href='http://biodiversityheritagelibrary.org'>Biodiversity Heritage Library</a>)
 - hathitrust       (<a href='http://hathitrust.org'>Hathi Trust</a>)
 - openlibrary      (<a href='http://openlibrary.org'>Open Library</a>)

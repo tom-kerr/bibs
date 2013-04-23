@@ -8,6 +8,9 @@ help: |
    APIs: 
      items
 
+  Documentation:
+    http://dp.la/info/developers/codex/
+
 url:
   'http://api.dp.la/v2'
 
@@ -86,9 +89,15 @@ parameters:
     by: {sort_by: ''}
     order: {sort_order: ''}
       
-
 api:  
   items: &items
+    help: | 
+      -------
+       items
+      -------
+      
+      <FIELD>:<PARAMETER> ...<OPTIONS>
+    namespace: 'items'
     path: '/items?{0}'
     input:
       type: key_value

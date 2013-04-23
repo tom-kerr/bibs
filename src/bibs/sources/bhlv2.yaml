@@ -1,5 +1,13 @@
 namespace:
   'bhlv2'
+help: |
+  -----------------------------------------
+   Biodiversity Heritage Library Version 2
+  -----------------------------------------
+
+  APIs:
+    query
+
 url:
   'http://biodiversitylibrary.org/api2'
 
@@ -194,6 +202,13 @@ parameters:
 
 api:
   query: &query
+    help: | 
+      --------
+       query
+      --------
+      
+      <PROTOTYPE>:<PARAMETER> ...<OPTIONS>
+    namespace: 'query'
     path: '/httpquery.ashx?{0}'
     input:
       type: key_value

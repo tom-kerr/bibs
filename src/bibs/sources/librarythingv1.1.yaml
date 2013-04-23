@@ -1,5 +1,16 @@
 namespace:
   'librarythingv1.1'
+help: | 
+  --------------------------
+   Library Thing Version 1.1
+  --------------------------
+
+  APIs:
+    rest
+
+  Documentation:
+    http://www.librarything.com/services/webservices.php
+
 url:
   'http://www.librarything.com/services'
 
@@ -78,6 +89,13 @@ parameters:
     
 api:
   rest: &rest
+    help: |
+      --------
+       rest
+      --------
+
+      <FIELD>:<PARAMETER> 
+    namespace: 'rest'
     path: '/rest/1.1/?{0}'
     input:
       type: key_value

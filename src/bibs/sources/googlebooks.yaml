@@ -1,5 +1,16 @@
 namespace:
   'googlebooks'
+help: | 
+  --------------
+   Google Books
+  --------------
+
+  APIs:
+    volumes
+
+  Documentation:
+    https://developers.google.com/books/docs/v1/using
+
 url:
   'https://googleapis.com'
 
@@ -59,7 +70,14 @@ parameters:
       
   
 api:
-  volumes: &books
+  volumes: &volumes
+    help: |
+      --------- 
+       volumes
+      ---------
+
+      <FIELD>:<PARAMETER> ...<FILTER>...<OPTIONS>  
+    namespace: 'volumes'
     path: '/books/v1/volumes?{}'
     input:
       type: key_value
@@ -81,4 +99,4 @@ api:
     output:
       default: json
 
-  default: *books
+  default: *volumes

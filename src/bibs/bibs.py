@@ -80,7 +80,8 @@ class Bibs(object):
         search_source = self.get_source(source)
         if api is not None and api in search_source['api']:
             if detail is not None:
-                path, entry = self.find_param(detail, search_source['api'][api])
+                query = detail.split('->')
+                path, entry = self.find_param(query, search_source['api'][api])
                 if entry is not None:
                     ws = '   '
                     buf = StringIO()

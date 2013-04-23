@@ -1,8 +1,19 @@
 namespace:
   'europeanav2'
+help: |
+   --------------------
+   Europeana Version 2
+   --------------------
+
+   APIs: 
+     search
+
+  Documentation:
+    http://preview.europeana.eu/portal/api-introduction.html
+
 url:
   'http://preview.europeana.eu/api/v2'
-
+  
 parameters:
 
   required: &required
@@ -11,6 +22,13 @@ parameters:
 
 api:
   search: &search
+    help: | 
+      -------
+       items
+      -------
+      
+      <FIELD>:<PARAMETER> ...<OPTIONS>
+    namespace: 'search'
     path: '/search.json?{0}'
     input:
       type: key_value
@@ -27,4 +45,4 @@ api:
     output:
       default: json
 
-  default: *srch
+  default: *search

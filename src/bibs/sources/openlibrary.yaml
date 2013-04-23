@@ -5,7 +5,7 @@ help: |
    OpenLibrary 
   -------------
 
-  APIs: 
+  APIs:
     volumes_brief
     multi_volumes_brief
     volumes_full
@@ -13,7 +13,10 @@ help: |
     books
     query
     search
-  
+
+  Documentation:
+    http://openlibrary.org/developers/api
+    
 url: 
   'http://openlibrary.org'
 
@@ -425,14 +428,14 @@ parameters:
           
 api: 
   volumes_brief: &volsbrief
-    path: '/api/volumes/brief/{0}.json'
     help: | 
       --------------
        volumes_brief
       --------------
       
       <FIELD>:<PARAMETER> ...<OPTIONS>
-
+    namespace: 'volumes_brief'
+    path: '/api/volumes/brief/{0}.json'
     input:
       type: key_value
       params: *libidslow
@@ -448,14 +451,14 @@ api:
       default: json
 
   multi_volumes_brief: &multivolsbrief
-    path: '/api/volumes/brief/json/{0}'
     help: |
       --------------------
        mutli_volumes_brief
       --------------------
       
       <FIELD>:<PARAMETER> ...<OPTIONS>
-
+    namespace: 'multi_volumes_brief'
+    path: '/api/volumes/brief/json/{0}'
     input:
       type: key_value
       params: *libidslow
@@ -475,14 +478,14 @@ api:
       default: json
       
   volumes_full: &volsfull
-    path: '/api/volumes/full/{0}.json'
     help: | 
       --------------
        volumes_full
       --------------
       
       <FIELD>:<PARAMETER> ...<OPTIONS>
-
+    namespace: 'volumes_full'
+    path: '/api/volumes/full/{0}.json'
     input:
       type: key_value
       params: *libidslow
@@ -498,14 +501,14 @@ api:
       default: json
 
   multi_volumes_full: &multivolsfull
-    path: '/api/volumes/full/json/{0}'
     help: |
       --------------------
        mutli_volumes_full
       --------------------
       
       <FIELD>:<PARAMETER> ...<OPTIONS>
-
+    namespace: 'multi_volumes_full'
+    path: '/api/volumes/full/json/{0}'
     input:
       type: key_value
       params: *libidslow
@@ -524,13 +527,14 @@ api:
       default: json
 
   books: &bks
-    path: '/api/books?bibkeys={0}'
     help: |
       -------
        books
       -------
       
       <FIELD>:<PARAMETER> ...<OPTIONS>
+    namespace: 'books'
+    path: '/api/books?bibkeys={0}'
     input: 
       type: key_value
       params: *libidsup
@@ -546,13 +550,14 @@ api:
       default: javascript
 
   query: &query
-    path: '/query.json?query={0}'
     help: |
       -------
        query
       -------
 
       <PROTOTYPE>:<PARAMETER> ...<OPTIONS>  
+    namespace: 'query'
+    path: '/query.json?query={0}'
     input:
       type: json
       params: {types: *types}
@@ -561,13 +566,14 @@ api:
       default: json
       
   search: &search
-    path: '/search.json?{0}'
     help: |
       --------
        search
       --------
 
       <FIELD>:<PARAMETER> 
+    namespace: 'search'
+    path: '/search.json?{0}'
     input: 
       type: key_value
       params: *searchfields

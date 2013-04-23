@@ -1,5 +1,16 @@
 namespace:
   'dlesev1.1'
+help: | 
+  ---------------------------------------------
+   Digital Library for Earth Science Education 
+  ---------------------------------------------
+
+  APIs:
+    ddsws
+
+  Documentation:
+    http://www.dlese.org/dds/services/ddsws1-1/index.jsp
+
 url:
   'http://www.dlese.org/dds/services'
 
@@ -121,6 +132,13 @@ parameters:
 
 api:
   ddsws: &ddsws
+    help: |
+      -------
+       ddsws
+      -------
+
+      <PROTOTYPE>:<PARAMETER> ...<OPTIONS>  
+    namespace: 'ddsws'
     path: '/ddsws1-1?{0}'
     input:
       type: key_value
