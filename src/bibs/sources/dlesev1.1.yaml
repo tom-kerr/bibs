@@ -137,7 +137,8 @@ api:
        ddsws
       -------
 
-      <PROTOTYPE>:<PARAMETER> ...<OPTIONS>  
+      Syntax:
+        <PROTOTYPE->VALUE : (PARAMETER)->VALUE> ...(OPTION)->VALUE
     namespace: 'ddsws'
     path: '/ddsws1-1?{0}'
     input:

@@ -206,8 +206,9 @@ api:
       --------
        query
       --------
-      
-      <PROTOTYPE>:<PARAMETER> ...<OPTIONS>
+
+      Syntax:
+        <PROTOTYPE->VALUE : (PARAMETER)->VALUE> ...(OPTION)->VALUE
     namespace: 'query'
     path: '/httpquery.ashx?{0}'
     input:

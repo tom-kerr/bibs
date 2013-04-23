@@ -21,12 +21,15 @@ class Bibs(object):
 
 
     def find_sources(self):
-        self.source_list = glob.glob(os.path.dirname(__file__) + 
+        self.sourcefile_list = glob.glob(os.path.dirname(__file__) + 
                                      '/' + Bibs.source_dir + '*.yaml')
+        self.source_list = []
+        for sourcefile in self.sourcefile_list:
+            self.source_list.append(os.path.basename(sourcefile).split('.yaml')[0])
 
 
     def load_source(self, namespace):
-        for source_file in self.source_list:
+        for source_file in self.sourcefile_list:
             match = re.match('^(?i)'+namespace+'.yaml$', os.path.basename(source_file))
             if match:
                 f = open(source_file, 'r')
@@ -76,7 +79,11 @@ class Bibs(object):
         return results        
 
 
-    def help(self, source, api=None, detail=None):
+    def help(self, source=None, api=None, detail=None):
+        if source is None:
+            print '-----------\nSource List\n-----------\n'
+            pprint.pprint(self.source_list)
+            return
         search_source = self.get_source(source)
         if api is not None and api in search_source['api']:
             if detail is not None:
@@ -96,6 +103,18 @@ class Bibs(object):
 
             elif 'help' in search_source['api'][api]:
                 print search_source['api'][api]['help']
+                params = search_source['api'][api]['input']['params']
+                options = search_source['api'][api]['input']['options']
+                print 'Parameters:'
+                for param, entry in params.items():
+                    print '\t\"' + param + '\"  Mode:', entry['mode'], '\n'
+                print 'Options:'
+                if options is None: 
+                    print '\tNone', 
+                else:
+                    for o in options:
+                        print '\t', o
+
 
         elif 'help' in search_source:
             print search_source['help']

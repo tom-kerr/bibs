@@ -96,7 +96,8 @@ api:
        items
       -------
       
-      <FIELD>:<PARAMETER> ...<OPTIONS>
+      Syntax:
+        (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'items'
     path: '/items?{0}'
     input:

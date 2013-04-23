@@ -433,7 +433,8 @@ api:
        volumes_brief
       --------------
       
-      <FIELD>:<PARAMETER> ...<OPTIONS>
+      Syntax:
+        (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'volumes_brief'
     path: '/api/volumes/brief/{0}.json'
     input:
@@ -456,7 +457,8 @@ api:
        mutli_volumes_brief
       --------------------
       
-      <FIELD>:<PARAMETER> ...<OPTIONS>
+      Syntax:
+        (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'multi_volumes_brief'
     path: '/api/volumes/brief/json/{0}'
     input:
@@ -482,8 +484,9 @@ api:
       --------------
        volumes_full
       --------------
-      
-      <FIELD>:<PARAMETER> ...<OPTIONS>
+
+      Syntax:
+        (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'volumes_full'
     path: '/api/volumes/full/{0}.json'
     input:
@@ -505,8 +508,9 @@ api:
       --------------------
        mutli_volumes_full
       --------------------
-      
-      <FIELD>:<PARAMETER> ...<OPTIONS>
+
+      Syntax:
+        (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'multi_volumes_full'
     path: '/api/volumes/full/json/{0}'
     input:
@@ -532,7 +536,8 @@ api:
        books
       -------
       
-      <FIELD>:<PARAMETER> ...<OPTIONS>
+      Syntax:
+        (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'books'
     path: '/api/books?bibkeys={0}'
     input: 
@@ -555,7 +560,8 @@ api:
        query
       -------
 
-      <PROTOTYPE>:<PARAMETER> ...<OPTIONS>  
+      Syntax:
+        <PROTOTYPE->VALUE : (PARAMETER)->VALUE> ...(OPTION)->VALUE
     namespace: 'query'
     path: '/query.json?query={0}'
     input:
@@ -571,7 +577,8 @@ api:
        search
       --------
 
-      <FIELD>:<PARAMETER> 
+      Syntax:
+        (FIELD)->VALUE
     namespace: 'search'
     path: '/search.json?{0}'
     input: 

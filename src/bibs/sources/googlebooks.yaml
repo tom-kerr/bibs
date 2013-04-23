@@ -76,7 +76,7 @@ api:
        volumes
       ---------
 
-      <FIELD>:<PARAMETER> ...<FILTER>...<OPTIONS>  
+      (FIELD)->VALUE ...(FILTER)->VALUE ...(OPTIONS)->VALUE
     namespace: 'volumes'
     path: '/books/v1/volumes?{}'
     input:

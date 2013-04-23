@@ -27,7 +27,8 @@ api:
        items
       -------
       
-      <FIELD>:<PARAMETER> ...<OPTIONS>
+      Syntax:
+        (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'search'
     path: '/search.json?{0}'
     input:

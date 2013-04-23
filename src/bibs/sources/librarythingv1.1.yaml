@@ -94,7 +94,8 @@ api:
        rest
       --------
 
-      <FIELD>:<PARAMETER> 
+      Syntax:
+        (FIELD)->VALUE 
     namespace: 'rest'
     path: '/rest/1.1/?{0}'
     input:
