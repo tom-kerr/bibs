@@ -115,8 +115,8 @@ class Bibs(object):
                     if input_data is not None:
                         print input_type
                         string = ''
+                        width = 0
                         if 'keywords' in input_data:
-                            width = 0
                             for k in input_data['keywords']:
                                 if len(k) > width: width = len(k)
                             for k in input_data['keywords']:
