@@ -433,14 +433,15 @@ api:
        volumes_brief
       --------------
       
-      Syntax:
+      Grammar:
         (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'volumes_brief'
     path: '/api/volumes/brief/{0}.json'
     input:
       type: key_value
       params: *libidslow
-      options: [callback]
+      options: 
+        keywords: [callback]
       syntax:
         field:
           bind: '/'
@@ -457,14 +458,15 @@ api:
        mutli_volumes_brief
       --------------------
       
-      Syntax:
+      Grammar:
         (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'multi_volumes_brief'
     path: '/api/volumes/brief/json/{0}'
     input:
       type: key_value
       params: *libidslow
-      options: [callback]
+      options: 
+        keywords: [callback]
       multi_value: True
       syntax:
         field:
@@ -485,14 +487,15 @@ api:
        volumes_full
       --------------
 
-      Syntax:
+      Grammar:
         (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'volumes_full'
     path: '/api/volumes/full/{0}.json'
     input:
       type: key_value
       params: *libidslow
-      options: [callback]
+      options: 
+        keywords: [callback]
       syntax:
         field:
           bind: '/'
@@ -509,14 +512,15 @@ api:
        mutli_volumes_full
       --------------------
 
-      Syntax:
+      Grammar:
         (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'multi_volumes_full'
     path: '/api/volumes/full/json/{0}'
     input:
       type: key_value
       params: *libidslow
-      options: [callback]
+      options: 
+        keywords: [callback]
       syntax:
         field:
           bind: ':'
@@ -536,14 +540,15 @@ api:
        books
       -------
       
-      Syntax:
+      Grammar:
         (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'books'
     path: '/api/books?bibkeys={0}'
     input: 
       type: key_value
       params: *libidsup
-      options: [format, callback, jscmd]
+      options: 
+        keywords: [format, callback, jscmd]
       syntax:
         field:
           bind: ':'
@@ -560,14 +565,19 @@ api:
        query
       -------
 
-      Syntax:
+      Grammar:
         <PROTOTYPE->VALUE : (PARAMETER)->VALUE> ...(OPTION)->VALUE
     namespace: 'query'
     path: '/query.json?query={0}'
     input:
       type: json
-      params: {types: *types}
-      options: [limit, offset, "*", *metafields]
+      params: 
+        types: *types
+      options: 
+        limit: limit
+        offset: offset 
+        "*": "*"
+        metafields: *metafields
     output:
       default: json
       
@@ -577,7 +587,7 @@ api:
        search
       --------
 
-      Syntax:
+      Grammar:
         (FIELD)->VALUE
     namespace: 'search'
     path: '/search.json?{0}'

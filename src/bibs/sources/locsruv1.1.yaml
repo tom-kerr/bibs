@@ -40,13 +40,13 @@ api:
        voyager
       ---------
 
-      Syntax:
+      Grammar:
         (FIELD)->VALUE ...(OPTIONS)->VALUE
     namespace: 'voyager'
     path: '/voyager?version=1.1&operation=searchRetrieve&{0}'
     input:
       type: key_value
-      params: 
+      params: *required
       options: *options
       required: *required
       multi_value: True

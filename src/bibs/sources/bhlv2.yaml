@@ -8,6 +8,9 @@ help: |
   APIs:
     query
 
+  Documentation:
+    http://www.biodiversitylibrary.org/api2/docs/docs.html
+
 url:
   'http://biodiversitylibrary.org/api2'
 
@@ -207,14 +210,17 @@ api:
        query
       --------
 
-      Syntax:
+      Grammar:
         <PROTOTYPE->VALUE : (PARAMETER)->VALUE> ...(OPTION)->VALUE
     namespace: 'query'
     path: '/httpquery.ashx?{0}'
     input:
       type: key_value
-      params: {methods: *methods}
-      options: [format, callback]
+      params: 
+        methods: *methods
+      options: 
+        format: format
+        callback: callback
       required: *required
       syntax:
         prototype:

@@ -103,18 +103,34 @@ class Bibs(object):
 
             elif 'help' in search_source['api'][api]:
                 print search_source['api'][api]['help']
+                if 'required' in search_source['api'][api]['input']:
+                    required = search_source['api'][api]['input']['required']
+                else:
+                    required = None
                 params = search_source['api'][api]['input']['params']
                 options = search_source['api'][api]['input']['options']
-                print 'Parameters:'
-                for param, entry in params.items():
-                    print '\t\"' + param + '\"  Mode:', entry['mode'], '\n'
-                print 'Options:'
-                if options is None: 
-                    print '\tNone', 
-                else:
-                    for o in options:
-                        print '\t', o
-
+                for input_type, input_data in OrderedDict([('Required:', required),
+                                                           ('Parameters:', params),
+                                                           ('Options:', options)]).items():
+                    if input_data is not None:
+                        print input_type
+                        string = ''
+                        if 'keywords' in input_data:
+                            width = 0
+                            for k in input_data['keywords']:
+                                if len(k) > width: width = len(k)
+                            for k in input_data['keywords']:
+                                print '\t{:>{}}'.format(k, width)
+                        else:
+                            for name, entry in input_data.items():
+                                if len(name) > width: width = len(name)
+                            for name, entry in input_data.items():
+                                string += '\t{:>{}}'.format(name, width)
+                                if 'mode' in entry:
+                                    string += '  <mode:' + entry['mode'] + '>\n'
+                                else:
+                                    string += '\n'
+                        print string
 
         elif 'help' in search_source:
             print search_source['help']

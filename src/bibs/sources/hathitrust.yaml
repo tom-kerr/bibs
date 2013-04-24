@@ -37,7 +37,8 @@ api:
     input:
       type: key_value
       params: *libidslow
-      options: [callback]
+      options: 
+        keywords: [callback]
       syntax:
         field:
           bind: '/'
@@ -61,7 +62,8 @@ api:
     input:
       type: key_value
       params: *libidslow
-      options: [callback]
+      options: 
+        keywords: [callback]
       multi_value: True
       syntax:
         field:
@@ -89,7 +91,8 @@ api:
     input:
       type: key_value
       params: *libidslow
-      options: [callback]
+      options: 
+        keywords: [callback]
       syntax:
         field:
           bind: '/'
@@ -106,14 +109,15 @@ api:
        mutli_volumes_full
       --------------------
       
-      Syntax:
+      Grammar:
         (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'multi_volumes_full'
     path: '/api/volumes/full/json/{0}'
     input:
       type: key_value
       params: *libidslow
-      options: [callback]
+      options: 
+        keywords: [callback]
       multi_value: True
       syntax:
         field:

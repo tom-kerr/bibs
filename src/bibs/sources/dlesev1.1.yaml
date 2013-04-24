@@ -137,14 +137,16 @@ api:
        ddsws
       -------
 
-      Syntax:
+      Grammar:
         <PROTOTYPE->VALUE : (PARAMETER)->VALUE> ...(OPTION)->VALUE
     namespace: 'ddsws'
     path: '/ddsws1-1?{0}'
     input:
       type: key_value
-      params: {verb: *verb}
-      options: [output, callback, transform]
+      params: 
+        verb: *verb
+      options: 
+        keywords: [output, callback, transform]
       syntax:
         prototype:
           bind: '='

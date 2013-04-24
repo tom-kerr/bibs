@@ -75,20 +75,25 @@ api:
       --------- 
        volumes
       ---------
-
-      (FIELD)->VALUE ...(FILTER)->VALUE ...(OPTIONS)->VALUE
+      
+      Grammar:
+        (FIELD)->VALUE ...(FILTER)->VALUE ...(OPTIONS)->VALUE
     namespace: 'volumes'
     path: '/books/v1/volumes?{}'
     input:
       type: key_value
-      params: {query: *q, keywords: *keywords, filters: *filters}
+      params: 
+        query: *q
+        keywords: *keywords
+        filters: *filters
       options: 
-        [api_key, 
-        *download, 
-        *pagination, 
-        *printtype, 
-        *projection, 
-        *sorting]
+        keywords:
+          [api_key, 
+          *download, 
+          *pagination, 
+          *printtype, 
+          *projection, 
+          *sorting]
       syntax:
         field:
           bind: '='

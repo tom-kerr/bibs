@@ -94,13 +94,15 @@ api:
        rest
       --------
 
-      Syntax:
+      Grammar:
         (FIELD)->VALUE 
     namespace: 'rest'
     path: '/rest/1.1/?{0}'
     input:
       type: key_value
-      params: {ck: *ck, local: *local}
+      params: 
+        ck: *ck
+        local: *local
       options: Null
       required: *required
       syntax:

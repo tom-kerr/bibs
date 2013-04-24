@@ -27,14 +27,15 @@ api:
        items
       -------
       
-      Syntax:
+      Grammar:
         (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'search'
     path: '/search.json?{0}'
     input:
       type: key_value
       params: *required
-      options: [callback, profile, qf, rows, start]
+      options: 
+        keywords: [callback, profile, qf, rows, start]
       required: *required
       syntax:
         field:

@@ -8,8 +8,8 @@ help: |
    APIs: 
      items
 
-  Documentation:
-    http://dp.la/info/developers/codex/
+   Documentation:
+     http://dp.la/info/developers/codex/
 
 url:
   'http://api.dp.la/v2'
@@ -19,7 +19,8 @@ parameters:
   required: &required
     mode: field
     keywords: [api_key]
-  
+    
+
   fields: &fields
     mode: field
     keywords: 
@@ -27,7 +28,7 @@ parameters:
       callback,
       isPartOf,
       provider]
-
+    
     sourceResources:
       title:        {sourceResource.title: ''}
       description:  {sourceResource.description: ''}
@@ -96,14 +97,20 @@ api:
        items
       -------
       
-      Syntax:
+      Grammar:
         (FIELD)->VALUE ...(OPTION)->VALUE
     namespace: 'items'
     path: '/items?{0}'
     input:
       type: key_value
-      params: {'fields': *fields, 'facets': *facets}
-      options: [*sort, page, page_size, facet_size]
+      params: 
+        fields: *fields 
+        facets: *facets
+      options: 
+        sort: *sort
+        page: page
+        page_size: page_size
+        facet_size: facet_size
       required: *required
       multi_value: True
       syntax:
