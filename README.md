@@ -15,7 +15,7 @@ Example
 	b = Bibs()
 	results = b.search("title->Tom Sawyer", 'dplav1', 'items')
 
-where **title->Tom Sawyer** is the *query*, **dplav1** is the bibliographic *source*, and **items** is the *api*.
+where **title->Tom Sawyer** is the *query*, **dplav1** is the bibliographic *source*, and **items** is the *api*. If no API is indicated, the source's default will be used.
 
 
 Query
@@ -40,7 +40,7 @@ Optional arguments are to be preceded by an **@**, like:
 
 where **publish_date->null** will request data from the **publish_date** field for all editions found whose title is 'Macbeth', and **limit->5** will limit the results to five.  
 
-One can pass the argument **return_format** to search() to convert your search results to a format not supported by the API. Accepted values are **json**, **xml**, or **object**. **object** will either return a class 'QueryObject' or a list of the former, depending on the nature of the data being converted.
+One can pass the argument **return_format** to search() to convert your search results to a format not supported by the API. Accepted values are **json**, **xml**, or **object**. object will either return a class 'QueryObject' or a list of such, depending on the nature of the data being converted.
 
 **pretty_print** is another optional argument which when set to **True** will pretty print your search results, in addition to returning them.
 
