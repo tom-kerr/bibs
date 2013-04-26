@@ -67,31 +67,29 @@ Currently supported Sources:
 Help
 -----
 
-A help function is provided for getting information about the supported sources and api.
+A help function is provided for getting information about the supported sources and APIs.
 
        	b.help()
 
-will print the currently supported sources.
+...will print the currently supported sources.
 
      	b.help('librarythingv1.1')
 
-will print the supported APIs and information concerning source librarythingv1.1.
+...will print the supported APIs and information concerning source librarythingv1.1.
 
      	b.help('librarythingv1.1', 'rest')
 
-will print information concerning librarythingv1.1's API 'rest', including grammer and a high level 
-view of the accepted parameters, and options. 
+...will print information concerning librarythingv1.1's API 'rest', including grammer and a high-level view of the accepted parameters, and options. 
 
-One can get specific information about the API's parameters by providing a third 'drill-down' style 
-argument using the same syntax for forming queries:
+One can get specific information about the API's parameters by providing a third 'drill-down' style argument using the same syntax for forming queries:
     
 	b.help('librarythingv1.1', 'rest', 'params')
 
-will print the complete list of parameters for 'rest', while
+...will print the complete list of parameters for 'rest', while
 
      	b.help('librarythingv1.1', 'rest', 'params->ck->getwork')
 
-will print the specs for the 'ck' prototype's 'getwork' parameter.
+...will print the specs for the 'ck' prototype's 'getwork' parameter.
 
 
 Installation
