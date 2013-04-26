@@ -61,23 +61,62 @@ class Bibs(object):
         #return
         request = urllib2.urlopen(query_object.query_string)
         results = request.read()
-        
-        if query_object.output_format == 'json':
-            if return_format.lower() == 'xml':
-                results = dict2xml(json.loads(results))
-            else:
-                results = json.loads(results)
-        elif query_object.output_format == 'xml':
-            if return_format.lower() == 'json':
-                results = json.loads(json.dumps(xmltodict.parse(results)))
-        elif query_object.output_format == 'javascript':
-            pass
-
+        results = self.convert_results(results, query_object.output_format, 
+                                       return_format)
         if pretty_print:
             pprint.pprint(results)
-        #else:
         return results        
 
+
+    def convert_results(self, results, output_format, return_format):
+        if output_format == 'json':
+            if return_format.lower() == 'xml':
+                results = dict2xml(json.loads(results))
+            elif return_format.lower() == 'object':
+                results = self.json_to_object(json.loads(results), 'QueryObject')
+            else:
+                results = json.loads(results)
+        elif output_format == 'xml':
+            if return_format.lower() == 'json':
+                results = json.loads(json.dumps(xmltodict.parse(results)))
+            elif return_format.lower() == 'object':
+                jsonresults = json.loads(json.dumps(xmltodict.parse(results)))
+                results = self.json_to_object(jsonresults, 'QueryObject')
+        elif output_format == 'javascript':
+            if return_format.lower() in ('json', 'xml', 'object'):
+                print ('Cannot Convert \'JavaScript\' response to \'' + 
+                       return_format.lower() +'\'...returning \'JavaScript\'')
+            pass
+        return results
+
+
+    def json_to_object(self, json, classname):
+        cls = 'QueryObjectSubElement'
+        if isinstance(json, list):
+            object_list = []
+            for item in json:
+                object_list.append(self.json_to_object(item, classname))
+            return object_list
+        elif isinstance(json, dict):
+            object_dict = {}
+            for key, value in json.items():
+                key = self.make_valid_python_variable_name(key)
+                if isinstance(value, list):
+                    object_list = []
+                    for item in value:
+                        object_list.append(self.json_to_object(item, cls))
+                    object_dict[key] = object_list
+                elif isinstance(value, dict):
+                    object_dict[key] = self.json_to_object(value, cls)
+                else:
+                    object_dict[key] = value
+            return type(classname, (), object_dict)
+
+
+
+    def make_valid_python_variable_name(self, string):
+        return re.sub('[^a-zA-Z0-9]', '_', string)
+        
 
     def help(self, source=None, api=None, detail=None):
         if source is None:

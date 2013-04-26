@@ -40,6 +40,10 @@ Optional arguments are to be preceded by an **@**, like:
 
 where **publish_date->null** will request data from the **publish_date** field for all editions found whose title is 'Macbeth', and **limit->5** will limit the results to five.  
 
+One can pass the argument **return_format** to search() to convert your search results to a format not supported by the API. Accepted values are **json**, **xml**, or **object**. **object** will either return a class 'QueryObject' or a list of the former, depending on the nature of the data being converted.
+
+**pretty_print** is another optional argument which when set to **True** will pretty print your search results, in addition to returning them.
+
 
 Source
 -----
@@ -59,6 +63,35 @@ Currently supported Sources:
 - librarythingv1.1 (<a href='http://www.librarything.com'>Library Thing</a>)
 - dlesev1.1        (<a href='http://www.dlese.org'>Digital Library for Earth System Education</a>)
 
+
+Help
+-----
+
+A help function is provided for getting information about the supported sources and api.
+
+       	b.help()
+
+will print the currently supported sources.
+
+     	b.help('librarythingv1.1')
+
+will print the supported APIs and information concerning source librarythingv1.1.
+
+     	b.help('librarythingv1.1', 'rest')
+
+will print information concerning librarythingv1.1's API 'rest', including grammer and a high level 
+view of the accepted parameters, and options. 
+
+One can get specific information about the API's parameters by providing a third 'drill-down' style 
+argument using the same syntax for forming queries:
+    
+	b.help('librarythingv1.1', 'rest', 'params')
+
+will print the complete list of parameters for 'rest', while
+
+     	b.help('librarythingv1.1', 'rest', 'params->ck->getwork')
+
+will print the specs for the 'ck' prototype's 'getwork' parameter.
 
 
 Installation
