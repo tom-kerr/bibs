@@ -21,7 +21,7 @@ parameters:
     keywords: [q]
 
   keywords: &keywords
-    mode: filter
+    mode: field
     syntax:
       bind: ':'
       chain: '+'
@@ -36,7 +36,7 @@ parameters:
 
   filters: &filters
     mode: field
-    key: {filter: ''}
+    prefix: {filter: ''}
     keywords:
       [partial,
       full,
@@ -46,7 +46,7 @@ parameters:
 
   download: &download
     mode: field
-    key: 'download'
+    prefix: 'download'
     keywords: [epub]
 
   pagination: &pagination

@@ -19,7 +19,7 @@ parameters:
   required: &required
     mode: field
     keywords: [query]
-
+  
   options: &options
     mode: field
     keywords:

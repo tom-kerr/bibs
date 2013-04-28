@@ -136,7 +136,7 @@ parameters:
 
   types: &types
     mode: prototype
-    key: {'type': '/type/'}
+    prefix: {'type': '/type/'}
 
     about:
       parameters:

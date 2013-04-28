@@ -18,7 +18,7 @@ parameters:
 
   verb: &verb
     mode: prototype
-    key: {verb: ''}
+    prefix: {verb: ''}
 
     Search:
       required:

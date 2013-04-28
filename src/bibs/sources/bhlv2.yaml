@@ -32,7 +32,7 @@ parameters:
       
   methods: &methods
     mode: prototype
-    key: {'op': ''}
+    prefix: {'op': ''}
 
     AuthorSearch:
       parameters:

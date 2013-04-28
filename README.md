@@ -40,7 +40,7 @@ Optional arguments are to be preceded by an **@**, like:
 
 where **publish_date->null** will request data from the **publish_date** field for all editions found whose title is 'Macbeth', and **limit->5** will limit the results to five.  
 
-One can pass the argument **return_format** to search() to convert your results to a format not supported by the API. Accepted values are **json**, **xml**, or **object**. **object** will either return an object of class 'QueryObject' or a list of such, depending on the nature of the data being converted. (Also note that python does not allow special characters in variable names, and so when necessary they will be changed to underscores, for example '@xmlns:xli' will become '_xmlns_xli'. 
+One can pass the argument **return_format** to search() to convert your results to a format not supported by the API. Accepted values are **json**, **xml**, or **object**. **object** will either return an object of class 'QueryObject' or a list of such, depending on the nature of the data being converted. (Also note that python does not allow special characters in variable names, and so when necessary they will be changed to a double underscore, for example '@xmlns:xli' will become '__xmlns__xli'. 
 
 **pretty_print** is another optional argument which when set to **True** will pretty print your search results, in addition to returning them.
 

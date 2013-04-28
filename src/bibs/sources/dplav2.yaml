@@ -19,76 +19,145 @@ parameters:
   required: &required
     mode: field
     keywords: [api_key]
+
+  keywordsearch: &keywordsearch
+    mode: field
+    keywords: [q]
     
+  sourceResourceTextFields: &sourceresourcetextfields
+    '_context': '@context' 
+    '_id': '@id'
+    count: 'count'
+
+    dataProvider: 'dataProvider'
+    docs: 'docs'
+    
+    hasView:
+      hasView: 'hasView'
+      '_id': 'hasView.@id'
+      format: 'hasView.format'
+      rights: 'hasView.rights'
+
+    id: 'id'
+    ingestDate: 'ingestDate'
+    ingestType: 'ingestType'
+
+    isPartOf:
+      isPartOf: 'isPartOf'
+      '_id': 'isPartOf.@id'
+      name: 'isPartOf.name'
+
+    isShownAt:
+      isShownAt: 'isShownAt'
+      '_id': 'isShownAt.@id'
+      format: 'isShownAt.format'
+      rights: 'isShownAt.rights' 
+    
+    object:
+      object: 'object'
+      '_id': 'object.@id'
+      format: 'object.format'
+      rights: 'object.rights'
+
+    provider:
+      provider: 'provider'
+      '_id': 'provider.@id'
+      name: 'provider.name'
+
+    collection: 
+      collection: 'sourceResource.collection'
+      '_id': 'sourceResource.collection.@id'
+    
+    contributor: 'sourceResource.contributor'  
+    creator: 'sourceResource.creator'
+    description: 'sourceResource.description'
+
+    date:
+      date: 'sourceResource.date'
+      begin: 'sourceResource.date.begin'
+      displayDate: 'sourceResource.date.displayDate'
+      end: 'sourceResource.date.end'
+      
+    description: 'sourceResource.description'
+    extent: 'sourceResource.extent'
+    format: 'sourceResource.format'
+    identifier: 'sourceResource.identifier'
+
+    language:
+      language: 'sourceResource.language'
+      name: 'sourceResource.language.name'
+      iso369: 'sourceResource.language.iso369'
+      
+    physicalMedium: 'sourceResource.physicalMedium'
+    publisher: 'sourceResource.publisher'
+    rights: 'sourceResource.rights'
+
+    spatial:
+      spatial:     'sourceResource.spatial'
+      coordinates: 'sourceResource.spatial.coordinates'
+      city:        'sourceResource.spatial.city'
+      county:      'sourceResource.spatial.county'
+      distance:    'sourceResource.spatial.distance'
+      iso3166_2:   'sourceResource.spatial.iso3166-2'
+      name:        'sourceResource.spatial.name'
+      region:      'sourceResource.spatial.region'
+      state:       'sourceResource.spatial.state'
+      
+    stateLocatedIn:
+      name:        'sourceResource.stateLocatedIn.name'
+      iso3166_2:   'sourceResource.stateLocatedIn.iso3166-2'
+      
+    subject:
+      subject: 'sourceResource.subject'
+      '_id':   'sourceResource.subject.@id'
+      '_type': 'sourceResource.subject.@type'
+      name:    'sourceResource.subject.name'
+
+    temporal:
+      temporal: 'sourceResource.temporal'
+      begin: 'sourceResource.temporal.begin'
+      end: 'sourceResource.temporal.end'
+    
+    title: 'sourceResource.title'
+    type: 'sourceResource.type'    
+
+
+  sourceResources: &sourceresources
+    mode: field
+    parameters: *sourceresourcetextfields
+
 
   fields: &fields
     mode: field
-    keywords: 
-      [q, 
-      callback,
-      isPartOf,
-      provider]
-    
-    sourceResources:
-      title:        {sourceResource.title: ''}
-      description:  {sourceResource.description: ''}
+    prefix: 'fields'
+    parameters: *sourceresourcetextfields
 
-      subject:
-        id:        {sourceResource.subject.@id: '' }
-        type:      {sourceResource.subject.@type: '' }
-        name:       {sourceResource.subject.name: '' }
-
-      creator:      {sourceResource.creator: ''}
-      type:         {sourceResource.type: ''}
-      publisher:    {sourceResource.publisher: ''}
-      format:       {sourceResource.format: ''}
-      rights:       {sourceResource.rights: ''}
-      contributor:  {sourceResource.contributor: ''}
-
-      spatial:
-        spatial:     {sourceResource.spatial: ''}
-        name:        {sourceResource.spatial.name: ''}
-        city:        {sourceResource.spatial.city: ''}
-        state:       {sourceResource.spatial.state: ''}
-        country:     {sourceResource.spatial.country: ''}
-        county:      {sourceResource.spatial.county: ''}
-        region:      {sourceResource.spatial.region: ''}
-        iso3166-2:   {sourceResource.spatial.iso3166-2: ''}
-        coordinates: {sourceResource.spatial.coordinates: ''}
-        distance:    {sourceResource.spatial.distance: ''}
-      before:       {sourceResource.date.before: ''}
-      after:        {sourceResource.date.after: ''}
 
   facets: &facets
     mode: field
-    key: 'facets'
+    prefix: 'facets'
     syntax:
       bind: '='
       chain: '&'
       multi: ','
       args: ':'
-    parameters:
-      spatial:
-        spatial:     'sourceResource.spatial.spatial'
-        name:        'sourceResource.spatial.name'
-        coordinates: 'sourceResource.spatial.coordinates'
-      date:
-        begin:       'sourceResource.date.begin'
-        begin.year:  'sourceResource.date.begin.year'
-        begin.month: 'sourceResource.date.begin.month'
-        begin.day:   'sourceResource.date.begin.day'
-        end:         'sourceResource.date.end'
-        end.year:    'sourceResource.date.end.year'
-        end.month:   'sourceResource.date.end.month'
-        end.day:     'sourceResource.date.end.day'
-      language:
-        name:   'sourceResource.language.name'
-      subject:  'sourceResource.subject'
-            
+    parameters: *sourceresourcetextfields
+
+                  
   sort: &sort
     mode: field
-    by: {sort_by: ''}
-    order: {sort_order: ''}
+    sort_by:
+      prefix: 'sort_by'
+      parameters: *sourceresourcetextfields
+
+    sort_order:
+      prefix: 'sort_order'
+      parameters:
+        asc: 'asc'
+        desc: 'desc'
+
+    sort_by_pin: 'sort_by_pin'
+      
       
 api:  
   items: &items
@@ -104,13 +173,16 @@ api:
     input:
       type: key_value
       params: 
-        fields: *fields 
+        keywordsearch: *keywordsearch
+        sourceresources: *sourceresources 
         facets: *facets
-      options: 
+        fields: *fields
         sort: *sort
+      options: 
         page: page
         page_size: page_size
         facet_size: facet_size
+        callback: callback
       required: *required
       multi_value: True
       syntax:
@@ -128,5 +200,11 @@ api:
           chain: Null
     output:
       default: json
+
+  #collections:
+  #  help:
+  #  path:
+  #  input:
+  #  output:
 
   default: *items

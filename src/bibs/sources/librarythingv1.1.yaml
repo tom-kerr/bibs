@@ -21,7 +21,7 @@ parameters:
     
   ck: &ck
     mode: prototype
-    key: {method: 'librarything.ck.'}
+    prefix: {method: 'librarything.ck.'}
     
     getwork: 
       parameters:
@@ -39,7 +39,7 @@ parameters:
           
   local: &local
     mode: prototype
-    key: {method: 'librarything.local.'}
+    prefix: {method: 'librarything.local.'}
       
     getvenue:
       parameters:
