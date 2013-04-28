@@ -263,15 +263,6 @@ class Bibs(object):
             if isinstance(prefix, dict):
                 entry = prefix
                 self.query_elements[mode][num]['prefix'] = None
-            #elif not value:
-            #    if key:
-            #        value = entry
-            #        entry = key
-            
-            #print 'prefix', prefix
-            #print 'value', value
-            #print 'entry', entry
-            #print 'syntax', syntax
 
             arg['string'] = ''
 
@@ -351,7 +342,7 @@ class Bibs(object):
                     
             self.query_string = self.url + self.path.format(string)
 
-        #print '\n' + self.query_string + '\n'
+        print '\n' + self.query_string + '\n'
         
 
     def assign_list_value(self, param_list, value):
@@ -400,7 +391,6 @@ class Bibs(object):
                                                   'prefix': prefix, 
                                                   'value': value,
                                                   'syntax': syntax})
-
 
     def parse_input_elements(self):
         self.query_elements['field'] = []
