@@ -342,7 +342,7 @@ class Bibs(object):
                     
             self.query_string = self.url + self.path.format(string)
 
-        print '\n' + self.query_string + '\n'
+        #print '\n' + self.query_string + '\n'
         
 
     def assign_list_value(self, param_list, value):
