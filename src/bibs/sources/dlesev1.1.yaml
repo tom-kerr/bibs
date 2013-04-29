@@ -10,6 +10,27 @@ help: |
 
   Documentation:
     http://www.dlese.org/dds/services/ddsws1-1/index.jsp
+    
+  About:
+    The Digital Library for Earth System Education (DLESE) 
+    is a distributed community effort involving educators, 
+    students, and scientists working together to improve 
+    the quality, quantity, and efficiency of teaching and 
+    learning about the Earth system at all levels.
+
+    DLESE supports Earth system science education by providing:
+
+    -- Access to high-quality collections of educational resources
+
+    -- Access to Earth data sets and imagery, including the tools 
+       and interfaces that enable their effective use in educational 
+       settings
+
+    -- Support services to help educators and learners effectively 
+       create, use, and share educational resources
+
+    -- Communication networks to facilitate interactions and collaborations 
+       across all dimensions of Earth system education
 
 url:
   'http://www.dlese.org/dds/services'

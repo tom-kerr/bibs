@@ -16,6 +16,10 @@ help: |
 
   Documentation:
     http://openlibrary.org/developers/api
+
+  About:
+    Open Library is an open, editable library catalog, 
+    building towards a web page for every book ever published.
     
 url: 
   'http://openlibrary.org'

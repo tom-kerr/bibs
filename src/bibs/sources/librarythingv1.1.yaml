@@ -11,6 +11,15 @@ help: |
   Documentation:
     http://www.librarything.com/services/webservices.php
 
+  About:
+    LibraryThing is an online service to help people 
+    catalog their books easily. You can access your 
+    catalog from anywhere—even on your mobile phone. 
+    Because everyone catalogs together, LibraryThing 
+    also connects people with the same books, comes 
+    up with suggestions for what to read next, and 
+    so forth. 
+
 url:
   'http://www.librarything.com/services'
 

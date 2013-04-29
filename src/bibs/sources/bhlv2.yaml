@@ -11,6 +11,21 @@ help: |
   Documentation:
     http://www.biodiversitylibrary.org/api2/docs/docs.html
 
+  About:
+    The Biodiversity Heritage Library (BHL) is a consortium 
+    of natural history and botanical libraries that cooperate 
+    to digitize and make accessible the legacy literature of 
+    biodiversity held in their collections and to make that 
+    literature available for open access and responsible use as 
+    a part of a global “biodiversity commons.” The BHL consortium 
+    works with the international taxonomic community, rights holders, 
+    and other interested parties to ensure that this biodiversity 
+    heritage is made available to a global audience through open 
+    access principles. In partnership with the Internet Archive 
+    and through local digitization efforts , the BHL has digitized 
+    millions of pages of taxonomic literature , representing tens 
+    of thousands of titles and over 100,000 volumes.
+
 url:
   'http://biodiversitylibrary.org/api2'
 

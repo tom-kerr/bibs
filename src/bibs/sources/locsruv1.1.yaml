@@ -11,6 +11,14 @@ help: |
   Documentation:
     http://www.loc.gov/standards/sru/
 
+  About:
+    The Library of Congress is the nation's oldest 
+    federal cultural institution and serves as the 
+    research arm of Congress. It is also the largest 
+    library in the world, with millions of books, 
+    recordings, photographs, maps and manuscripts 
+    in its collections.
+
 url:
   'http://z3950.loc.gov:7090'
 

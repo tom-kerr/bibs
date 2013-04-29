@@ -14,6 +14,14 @@ help: |
   Documentation:
     http://www.hathitrust.org/bib_api
 
+  About:
+    HathiTrust is a partnership of major research 
+    institutions and libraries working to ensure 
+    that the cultural record is preserved and 
+    accessible long into the future. There are more 
+    than sixty partners in HathiTrust, and membership 
+    is open to institutions worldwide.
+
 url:
   'http://catalog.hathitrust.org'
 

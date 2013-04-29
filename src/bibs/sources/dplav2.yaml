@@ -11,6 +11,14 @@ help: |
    Documentation:
      http://dp.la/info/developers/codex/
 
+   About:
+     The Digital Public Library of America brings together 
+     the riches of America’s libraries, archives, and museums, 
+     and makes them freely available to the world. It strives to 
+     contain the full breadth of human expression, from the written 
+     word, to works of art and culture, to records of America’s heritage, 
+     to the efforts and data of science.
+
 url:
   'http://api.dp.la/v2'
 

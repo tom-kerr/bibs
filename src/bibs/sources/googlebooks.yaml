@@ -11,6 +11,9 @@ help: |
   Documentation:
     https://developers.google.com/books/docs/v1/using
 
+  About:
+    Google Books is our effort to make book content more discoverable on the Web.
+
 url:
   'https://www.googleapis.com'
 
