@@ -13,9 +13,9 @@ Example
 	from bibs.bibs import Bibs
 
 	b = Bibs()
-	results = b.search("title->Tom Sawyer", 'dplav1', 'items')
+	results = b.search("title->Tom Sawyer", 'dplav2', 'items')
 
-where **title->Tom Sawyer** is the *query*, **dplav1** is the bibliographic *source*, and **items** is the *api*. If no API is indicated, the source's default will be used.
+where **title->Tom Sawyer** is the *query*, **dplav2** is the bibliographic *source*, and **items** is the *api*. If no API is indicated, the source's default will be used.
 
 
 Query
