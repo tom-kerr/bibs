@@ -3,7 +3,7 @@ bibs
 Bibliographic Search
 ------------
 
-An experimental python module with the goal of a shared syntax for querying public Bibliographic APIs.
+An experimental python module with the goal of a shared syntax for querying RESTful Bibliographic APIs.
 
 (in development)
 
@@ -15,7 +15,7 @@ Example
 	b = Bibs()
 	results = b.search("api_key->xxxx:sourceResource->title->Tom Sawyer", 'dplav2', 'items')
 
-where **api_key->xxxx:sourceResource->title->Tom Sawyer** is the *query*, **dplav2** is the bibliographic *source*, and **items** is the *api*. If no API is indicated, the source's default will be used.
+where **api_key->xxxx:sourceResource->title->Tom Sawyer** is the *query*, **dplav2** is the bibliographic *source*, and **items** is the *api*. 
 
 
 Query
