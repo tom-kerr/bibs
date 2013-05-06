@@ -106,7 +106,7 @@ class Bibs(object):
 
 
     def json_to_object(self, json, classname):
-        cls = 'QueryObjectSubElement'
+        cls = 'QueryObjectSubElement'       
         if isinstance(json, list):
             object_list = []
             for item in json:
@@ -126,6 +126,8 @@ class Bibs(object):
                 else:
                     object_dict[key] = value
             return type(classname, (), object_dict)
+        else:
+            return json
 
 
     def make_valid_python_variable_name(self, string):
