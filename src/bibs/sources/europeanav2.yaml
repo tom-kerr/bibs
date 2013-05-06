@@ -8,10 +8,10 @@ help: |
    APIs: 
      search
 
-  Documentation:
-    http://preview.europeana.eu/portal/api-introduction.html
+   Documentation:
+     http://preview.europeana.eu/portal/api-introduction.html
 
-  About:
+   About:
      The Europeana Foundation is the operator of the 
      Europeana service, including the search portal at 
      Europeana.eu and related data services such as the 
