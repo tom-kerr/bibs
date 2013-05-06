@@ -259,7 +259,7 @@ class Bibs(object):
             prefix = arg['prefix']
             value = arg['value']
             syntax = arg['syntax']
-            
+
             if isinstance(prefix, dict):
                 entry = prefix
                 self.query_elements[mode][num]['prefix'] = None

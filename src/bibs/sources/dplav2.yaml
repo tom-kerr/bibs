@@ -130,7 +130,7 @@ parameters:
     type: 'sourceResource.type'    
 
 
-  sourceResources: &sourceresources
+  sourceResource: &sourceresource
     mode: field
     parameters: *sourceresourcetextfields
 
@@ -182,7 +182,7 @@ api:
       type: key_value
       params: 
         keywordsearch: *keywordsearch
-        sourceresources: *sourceresources 
+        sourceResource: *sourceresource
         facets: *facets
         fields: *fields
         sort: *sort
