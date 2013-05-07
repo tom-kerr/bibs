@@ -314,6 +314,16 @@ class Bibs(object):
                     elif entry and value:
                         arg['string'] += entry + syntax['bind'] + urllib.quote(value)
                         
+                    for index in self.multi:
+                        if num in index:
+                            for i in index:
+                                if num == i:
+                                    if i < len(index)-1:
+                                        arg['string'] += self.syntax['multi']['bind']
+                                    else:
+                                        arg['string'] += self.syntax[mode]['chain'] 
+                        else:
+                            arg['string'] += self.syntax[mode]['chain'] 
             #print 'string:', arg['string']
 
 
@@ -328,10 +338,12 @@ class Bibs(object):
                     syntax = arg['syntax']
                     if self.input_type == 'json':
                         string.append(arg['string'])
-                    else:
+                    else:    
                         if arg['prefix']:
-                            if (syntax['chain'] + arg['prefix']) not in string:
-                                string.append(syntax['chain'] + arg['prefix'])
+                            if (arg['prefix']) not in string:
+                                if len(self.multi) == 0:
+                                    string.append(syntax['chain'])
+                                string.append(arg['prefix'])
                                 string.append(syntax['bind'] + arg['string'])
                             else:
                                 string.append(arg['string'])
@@ -343,8 +355,10 @@ class Bibs(object):
                                         string.append(syntax['multi'])
                                         break                
                         else:
-                            string.append(syntax['chain'] + arg['string'])
-
+                            if len(self.multi) == 0:
+                                string.append(syntax['chain'])
+                            string.append(arg['string'])
+                            
         string = ''.join(string)
         if self.input_type == 'json':
             string = string.lstrip(',')
@@ -699,11 +713,28 @@ class Bibs(object):
 
 
     def lex(self, string):
+        self.multi = []
+        if self.multi_value:
+            self.index_multi(string)
         elements = self.split_and_strip(string)
         return elements
 
 
+    def index_multi(self, string):
+        elements = re.split('(?<!\\\\):', string)
+        multi = []
+        for e in elements:
+            multi.append(re.split('(?<!\\\\)\|', e))
+        c = 0
+        for n, m in enumerate(multi):
+            if len(m) > 1:
+                self.multi.append(range(c, c + len(m)))
+            c += len(m)
+        
+
     def split_and_strip(self, string):
+        if self.multi_value:
+            string = re.sub('\\|', ':', string)
         elements = re.split('(?<!\\\\):', string)
         new_elements = []
         for num, element in enumerate(elements):

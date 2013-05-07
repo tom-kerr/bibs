@@ -525,6 +525,7 @@ api:
       params: *libidslow
       options: 
         keywords: [callback]
+      multi_value: True
       syntax:
         field:
           bind: ':'
