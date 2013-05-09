@@ -51,15 +51,15 @@ One can pass the argument **return_format** to search() to convert your results 
 **pretty_print** is another optional argument which when set to **True** will pretty print your search results, in addition to returning them.
 
 
-<h2>Prototypes</h2>
+<h3>Prototypes</h3>
 TODO -> documentation
 
 
-<h2>Fields</h2>
+<h3>Fields</h3>
 TODO -> documentation
 
 
-<h2>Options</h2>
+<h3>Options</h3>
 TODO -> documentation
 
 
