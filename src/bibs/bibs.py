@@ -29,7 +29,6 @@ elif major == 3:
 
 import glob
 import yaml, json
-#from dict2xml import dict2xml
 from dicttoxml import dicttoxml
 import xmltodict
 from lxml import etree

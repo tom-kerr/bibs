@@ -43,15 +43,30 @@ Optional arguments are to be preceded by an **@**, like:
 
 where **publish_date->null** will request data from the **publish_date** field for all editions found whose title is 'Macbeth', and **limit->5** will limit the results to five.  
 
+If you need to include one of the special characters (**:**, **->**, **@**, **|**) in your query, escape it by preceding it with **\**.
+
+
 One can pass the argument **return_format** to search() to convert your results to a format not supported by the API. Accepted values are **json**, **xml**, or **object**. **object** will either return an object of class 'QueryObject' or a list of such, depending on the nature of the data being converted. (Also note that python does not allow special characters in variable names, and so when necessary they will be changed to a double underscore, for example '@xmlns:xli' will become '__xmlns__xli'. 
 
 **pretty_print** is another optional argument which when set to **True** will pretty print your search results, in addition to returning them.
 
 
+<h2>Prototypes</h2>
+TODO -> documentation
+
+
+<h2>Fields</h2>
+TODO -> documentation
+
+
+<h2>Options</h2>
+TODO -> documentation
+
+
 Source
 -----
 
-Each source is modeled in YAML, providing the information necessary to parse queries and the documentation on how to form queries. 
+Each source is mapped in YAML, providing the information necessary to parse queries and the documentation on how to form queries. 
 
 
 Currently supported Sources:
@@ -99,10 +114,11 @@ Installation
 -----
 
 - Download and unpack the zip.
-- "pip install bibs/ -r bibs/requirements.txt" or run "python bibs/setup.py install" and install the dependencies yourself.
+- python 2.7 -> "pip install bibs/ -r bibs/requirements.txt" or run "python bibs/setup.py install" and install the dependencies yourself.
+- python 3.x  -> "pip-3.x install bibs/ -r bibs/requirements.txt" or run "python bibs/setup.py install" and install the dependencies yourself.
 
 Dependencies
 - lxml
 - PyYAML
 - xmltodict
-- dict2xml
+- dicttoxml
