@@ -2,10 +2,13 @@ bibs
 ====
 Bibliographic Search
 ------------
+License: GPLv3
 
 An experimental python module with the goal of a shared syntax for querying RESTful Bibliographic APIs.
 
 (in development)
+
+Requires python 2.7 or greater.
 
 Example
 -----

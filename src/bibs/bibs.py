@@ -13,18 +13,31 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
+
 import os, sys
+major, minor = sys.version_info[0], sys.version_info[1]
+if major == 2 and minor < 7:
+    raise RuntimeError('Your python is too small; 2.7 or larger required.')
+elif major == 2 and minor >= 7:
+    from urllib2 import quote, urlopen
+    from StringIO import StringIO
+elif major == 3:
+    from urllib.parse import quote
+    from urllib.request import urlopen
+    from io import StringIO
+
 import glob
-import urllib2, urllib
 import yaml, json
-from dict2xml import dict2xml
+#from dict2xml import dict2xml
+from dicttoxml import dicttoxml
 import xmltodict
 from lxml import etree
 import re
 import copy
 import pprint
 from collections import OrderedDict
-from StringIO import StringIO
+
 
 class Bibs(object):
 
@@ -66,7 +79,6 @@ class Bibs(object):
     def search(self, input_string, source=None, api='default', 
                return_format='', pretty_print=False):
         search_source = self.get_source(source)
-
         query_object = self.create_query_object(input_string, search_source, api)
         query_object.parse_input_elements()
         query_object.parse_input_options()
@@ -74,8 +86,9 @@ class Bibs(object):
         query_object.enforce_requirements()
         query_object.build_string()
         #return
-        request = urllib2.urlopen(query_object.query_string)
-        results = request.read()
+        request = urlopen(query_object.query_string)
+        results = request.read().decode('utf-8')
+        #pprint.pprint(results)
         results = self.convert_results(results, query_object.output_format, 
                                        return_format)
         if pretty_print:
@@ -83,10 +96,22 @@ class Bibs(object):
         return results        
 
 
+    def get_url(self, input_string, source=None, api='default'):
+        search_source = self.get_source(source)
+        query_object = self.create_query_object(input_string, search_source, api)
+        query_object.parse_input_elements()
+        query_object.parse_input_options()
+        query_object.determine_format()
+        query_object.enforce_requirements()
+        query_object.build_string()
+        return query_object.query_string
+
+
     def convert_results(self, results, output_format, return_format):
         if output_format == 'json':
             if return_format.lower() == 'xml':
-                results = dict2xml(json.loads(results))
+                #results = dict2xml(json.loads(results))
+                results = dicttoxml(json.loads(results))
             elif return_format.lower() == 'object':
                 results = self.json_to_object(json.loads(results), 'QueryObject')
             else:
@@ -136,7 +161,7 @@ class Bibs(object):
 
     def help(self, source=None, api=None, detail=None):
         if source is None:
-            print '-----------\nSource List\n-----------\n'
+            print ('-----------\nSource List\n-----------\n')
             pprint.pprint(self.source_list)
             return
         search_source = self.get_source(source)
@@ -147,17 +172,17 @@ class Bibs(object):
                 if entry is not None:
                     ws = '   '
                     buf = StringIO()
-                    print 'Path to \''+detail+'\':'   
+                    print ('Path to \''+detail+'\':')
                     for num, p in enumerate(path):
                         if num == len(path)-1:
                             pprint.pprint(entry, stream=buf)
-                            print ws + p + '-> (... \n\n' + buf.getvalue() + ws +'...)'
+                            print (ws + p + '-> (... \n\n' + buf.getvalue() + ws +'...)')
                         else:
-                            print ws + p
+                            print (ws + p)
                         ws += '   '                    
 
             elif 'help' in search_source['api'][api]:
-                print search_source['api'][api]['help']
+                print (search_source['api'][api]['help'])
                 if 'required' in search_source['api'][api]['input']:
                     required = search_source['api'][api]['input']['required']
                 else:
@@ -168,14 +193,14 @@ class Bibs(object):
                                                            ('Parameters:', params),
                                                            ('Options:', options)]).items():
                     if input_data is not None:
-                        print input_type
+                        print (input_type)
                         string = ''
                         width = 0
                         if 'keywords' in input_data:
                             for k in input_data['keywords']:
                                 if len(k) > width: width = len(k)
                             for k in input_data['keywords']:
-                                print '\t{:>{}}'.format(k, width)
+                                print ('\t{:>{}}'.format(k, width))
                         else:
                             for name, entry in input_data.items():
                                 if len(name) > width: width = len(name)
@@ -185,10 +210,10 @@ class Bibs(object):
                                     string += '  <mode:' + entry['mode'] + '>\n'
                                 else:
                                     string += '\n'
-                        print string
+                        print (string)
 
         elif 'help' in search_source:
-            print search_source['help']
+            print (search_source['help'])
 
 
     def determine_format(self):
@@ -308,11 +333,11 @@ class Bibs(object):
                         arg['string'] += ",\""+entry+"\":\""+value+"\""
                 else:
                     if prefix and entry and value:
-                        arg['string'] += entry + syntax['args'] + urllib.quote(value)
+                        arg['string'] += entry + syntax['args'] + quote(value)
                     elif prefix and entry:
                         arg['string'] += entry
                     elif entry and value:
-                        arg['string'] += entry + syntax['bind'] + urllib.quote(value)
+                        arg['string'] += entry + syntax['bind'] + quote(value)
                         
                     for index in self.multi:
                         if num in index:
@@ -372,8 +397,6 @@ class Bibs(object):
                             string = string.rstrip(self.syntax[mode][char])
                     
             self.query_string = self.url + self.path.format(string)
-
-        #print '\n' + self.query_string + '\n'
         
 
     def assign_list_value(self, param_list, value):
@@ -383,7 +406,7 @@ class Bibs(object):
             prefix = None
         values = value.split('|')
         for v in values:
-            v = urllib2.quote(v.lstrip(' ').rstrip(' '))
+            v = quote(v.lstrip(' ').rstrip(' '))
             if prefix:
                 v = prefix + v
             param_list.append(v)
@@ -395,7 +418,7 @@ class Bibs(object):
             if isinstance(entry, str):
                 if self.multi_value:
                     value = re.sub('(?<!\\\\)\|', self.syntax['multi']['bind'], value)
-                param_dict[param] += urllib2.quote(str(value))
+                param_dict[param] += quote(str(value))
                 param_dict[param] = param_dict[param].lstrip(' ').rstrip(' ')
                 return param_dict
             elif isinstance(entry, list):
