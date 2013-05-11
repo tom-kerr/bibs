@@ -76,7 +76,7 @@ class Bibs(object):
 
 
     def search(self, input_string, source=None, api='default', 
-               return_format='', pretty_print=False):
+               return_format='', inherit_from=None, pretty_print=False):
         search_source = self.get_source(source)
         query_object = self.create_query_object(input_string, search_source, api)
         query_object.parse_input_elements()
@@ -88,7 +88,7 @@ class Bibs(object):
         request = urlopen(query_object.query_string)
         results = request.read().decode('utf-8')
         results = self.convert_results(results, query_object.output_format, 
-                                       return_format)
+                                       return_format, inherit_from)
         if pretty_print:
             pprint.pprint(results)
         return results        
@@ -105,12 +105,15 @@ class Bibs(object):
         return query_object.query_string
 
 
-    def convert_results(self, results, output_format, return_format):
+    def convert_results(self, results, output_format, 
+                        return_format, inherit_from):
         if output_format == 'json':
             if return_format.lower() == 'xml':
                 results = dicttoxml(json.loads(results))
             elif return_format.lower() == 'object':
-                results = self.json_to_object(json.loads(results), 'QueryObject')
+                results = self.json_to_object(json.loads(results), 
+                                              'QueryObject', 
+                                              inherit_from)
             else:
                 results = json.loads(results)
         elif output_format == 'xml':
@@ -118,7 +121,9 @@ class Bibs(object):
                 results = json.loads(json.dumps(xmltodict.parse(results)))
             elif return_format.lower() == 'object':
                 jsonresults = json.loads(json.dumps(xmltodict.parse(results)))
-                results = self.json_to_object(jsonresults, 'QueryObject')
+                results = self.json_to_object(jsonresults, 
+                                              'QueryObject',
+                                              inherit_from)
         elif output_format == 'javascript':
             if return_format.lower() in ('json', 'xml', 'object'):
                 print ('Cannot Convert \'JavaScript\' response to \'' + 
@@ -127,7 +132,7 @@ class Bibs(object):
         return results
 
 
-    def json_to_object(self, json, classname):
+    def json_to_object(self, json, classname, inherit_from=None):
         cls = 'QueryObjectSubElement'       
         if isinstance(json, list):
             object_list = []
@@ -147,7 +152,11 @@ class Bibs(object):
                     object_dict[key] = self.json_to_object(value, cls)
                 else:
                     object_dict[key] = value
-            return type(classname, (), object_dict)
+            if isinstance(inherit_from, tuple):
+                inherits = inherit_from 
+            else:
+                inherits = ()
+            return type(classname, inherits, object_dict)
         else:
             return json
 
