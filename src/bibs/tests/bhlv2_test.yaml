@@ -1,0 +1,8 @@
+query:
+
+  methods:
+
+    GetCollections:
+      CASES:
+        'apikey->xxx:methods->GetCollections': 
+          'http://biodiversitylibrary.org/api2/httpquery.ashx?op=GetCollections&apikey=xxx'

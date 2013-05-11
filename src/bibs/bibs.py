@@ -87,7 +87,6 @@ class Bibs(object):
         #return
         request = urlopen(query_object.query_string)
         results = request.read().decode('utf-8')
-        #pprint.pprint(results)
         results = self.convert_results(results, query_object.output_format, 
                                        return_format)
         if pretty_print:
@@ -109,7 +108,6 @@ class Bibs(object):
     def convert_results(self, results, output_format, return_format):
         if output_format == 'json':
             if return_format.lower() == 'xml':
-                #results = dict2xml(json.loads(results))
                 results = dicttoxml(json.loads(results))
             elif return_format.lower() == 'object':
                 results = self.json_to_object(json.loads(results), 'QueryObject')
@@ -219,8 +217,9 @@ class Bibs(object):
         if 'option' in self.query_elements:
             for arg in self.query_elements['option']:
                 prefix = arg['prefix']
+                entry = arg['entry']
                 value = arg['value']
-                if prefix == 'format':
+                if prefix == 'format' or entry == 'format':
                     self.output_format = value
                     return
                 
@@ -348,7 +347,7 @@ class Bibs(object):
                                         arg['string'] += self.syntax[mode]['chain'] 
                         else:
                             arg['string'] += self.syntax[mode]['chain'] 
-            #print 'string:', arg['string']
+            #print ('string:', arg['string'])
 
 
     def build_string(self):
@@ -382,8 +381,10 @@ class Bibs(object):
                             if len(self.multi) == 0:
                                 string.append(syntax['chain'])
                             string.append(arg['string'])
-                            
+
+        string = [s for s in string if s is not None]
         string = ''.join(string)
+
         if self.input_type == 'json':
             string = string.lstrip(',')
             self.query_string = self.url + self.path.format('{' + string + '}')

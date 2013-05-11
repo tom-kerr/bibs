@@ -1,0 +1,113 @@
+volumes_full:
+  
+  volumes:
+    parameters:
+      CASES: {
+        'isbn->1234567890': 
+          'http://openlibrary.org/api/volumes/full/isbn/1234567890.json',
+        }
+
+volumes_brief:
+  
+  volumes:
+    parameters:
+      CASES: {
+        'isbn->1234567890': 
+          'http://openlibrary.org/api/volumes/brief/isbn/1234567890.json',
+        }
+
+multi_volumes_full:
+  
+  volumes:
+    parameters:
+      CASES: {
+        'isbn->1234567890|oclc->123456': 
+          'http://openlibrary.org/api/volumes/full/json/isbn:1234567890|oclc:123456',
+        }
+
+multi_volumes_brief:
+  
+  volumes:
+    parameters:
+      CASES: {
+        'isbn->1234567890|oclc->123456': 
+          'http://openlibrary.org/api/volumes/brief/json/isbn:1234567890|oclc:123456',
+        }
+
+books:
+
+  books:
+    parameters:
+      CASES: {
+        'isbn->1234567890':
+          'http://openlibrary.org/api/books?bibkeys=ISBN:1234567890',
+        'isbn->1234567890:isbn->0123456789':
+          'http://openlibrary.org/api/books?bibkeys=ISBN:1234567890,ISBN:0123456789',  
+        }
+
+search:
+
+  search:
+    parameters:
+      CASES: {
+        'title->Macbeth':
+          'http://openlibrary.org/search.json?title=Macbeth',
+        }
+
+
+query: 
+  
+  work:    
+
+    title: 
+      CASES:
+        'types->work:title->Macbeth':
+          'http://openlibrary.org/query.json?query={"type":"/type/work","title":"Macbeth"}'
+
+    subtitle:
+      CASES:
+        'types->work:subtitle->Macbeth':
+          'http://openlibrary.org/query.json?query={"type":"/type/work","subtitle":"Macbeth"}'
+    
+    authors:
+      CASES:
+        'types->work:authors->OL1A': 
+          'http://openlibrary.org/query.json?query={"type":"/type/work","authors":{"author":{"key":"/authors/OL1A"}}}'
+
+    translated_titles:
+        #text: ' '
+        language:
+          CASES:
+            'types->work:translated_titles->language->eng':
+              'http://openlibrary.org/query.json?query={"type":"/type/work","translated_titles":{"language":{"key":"/languages/eng"}}}'
+    subjects:
+      CASES: {
+        'types->work:subjects->peace':
+          'http://openlibrary.org/query.json?query={"type":"/type/work","subjects":["peace"]}',
+        'types->work:subjects->war|peace':
+          'http://openlibrary.org/query.json?query={"type":"/type/work","subjects":["war","peace"]}'
+          }
+
+    #  subject_places: []
+    #  subject_times: []
+    #  subject_people: []
+      #NOT INDEXED
+      #description:        
+    #  dewey_number: []
+    #  lc_classifications: []
+      #NOT INDEXED
+      #first_sentence:        
+      #TODO
+      #original_languages:        
+    #  other_titles: []
+    #  first_publish_date: ''
+      #TODO
+    #  links: 
+    #    title: ' '
+    #    url: ' '
+      #NOT INDEXED
+      #notes:
+      #TODO
+      #cover_edition: 
+    #  covers: []
+        
