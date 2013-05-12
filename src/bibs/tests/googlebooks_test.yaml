@@ -1,0 +1,46 @@
+volumes:
+
+  query:
+    
+    parameters:
+      CASES:
+        'q->fruit': 
+          'https://www.googleapis.com/books/v1/volumes?q=fruit'
+          
+
+  keywords:
+
+    parameters:
+      CASES:
+        'q->Macbeth:inauthor->Shakespeare':
+          'https://www.googleapis.com/books/v1/volumes?q=Macbeth+inauthor:Shakespeare'
+
+
+  filters:
+
+    parameters:
+      CASES:
+        'q->Macbeth:inauthor->Shakespeare:filters->ebook':
+          'https://www.googleapis.com/books/v1/volumes?q=Macbeth+inauthor:Shakespeare&filter=ebook'
+
+
+  options:
+
+    parameters:
+      CASES: {
+        'q->Macbeth:inauthor->Shakespeare @download->epub->':
+          'https://www.googleapis.com/books/v1/volumes?q=Macbeth+inauthor:Shakespeare&download=epub',
+        'q->Macbeth:inauthor->Shakespeare @startIndex->5:maxResults->5': 
+          'https://www.googleapis.com/books/v1/volumes?q=Macbeth+inauthor:Shakespeare&startIndex=5&maxResults=5',
+        'q->Macbeth:inauthor->Shakespeare @print_type->all->':
+          'https://www.googleapis.com/books/v1/volumes?q=Macbeth+inauthor:Shakespeare&printType=all',
+        'q->Macbeth:inauthor->Shakespeare @projection->full->':
+          'https://www.googleapis.com/books/v1/volumes?q=Macbeth+inauthor:Shakespeare&projection=full',
+        'q->Macbeth:inauthor->Shakespeare @order_by->relevance->':
+          'https://www.googleapis.com/books/v1/volumes?q=Macbeth+inauthor:Shakespeare&orderBy=relevance',
+
+
+
+
+
+          }

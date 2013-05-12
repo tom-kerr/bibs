@@ -1,0 +1,28 @@
+rest:
+
+  ck:
+
+    getwork:
+      CASES: 
+        'apikey->xxx:ck->getwork:name->Macbeth': 
+          'http://www.librarything.com/services/rest/1.1/?method=librarything.ck.getwork&apikey=xxx&name=Macbeth'
+
+    #getauthor
+    #CASES:
+
+  #local:
+
+    #getvenue:
+    #  CASES:
+
+    #getvenuesnear:
+    #  CASES:
+        
+    #searchvenues:
+    #  CASES:
+
+    #geteventsnear:
+    #  CASES:
+
+    #searchevents:
+    #  CASES:

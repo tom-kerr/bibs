@@ -59,10 +59,12 @@ parameters:
 
   print_type: &printtype
     mode: field
+    prefix: 'printType'
     keywords: [all, books, magazines]
 
   projection: &projection
     mode: field
+    prefix: 'projection'
     keywords: [full, lite]
     
   sorting: &sorting
@@ -90,13 +92,12 @@ api:
         keywords: *keywords
         filters: *filters
       options: 
-        keywords:
-          [api_key, 
-          *download, 
-          *pagination, 
-          *printtype, 
-          *projection, 
-          *sorting]
+        [api_key, 
+        download: *download, 
+        *pagination, 
+        print_type: *printtype, 
+        projection: *projection, 
+        *sorting]
       syntax:
         field:
           bind: '='

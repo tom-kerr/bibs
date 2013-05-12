@@ -1,0 +1,44 @@
+ddsws:
+  verbs:
+  #Search:
+    #CASES: {}
+
+  #UserSearch:
+    #CASES: {}
+
+  #GetRecord:
+    #CASES: {}
+
+      
+  #ListFields:
+    #CASES: {}
+
+  #ListTerms:
+    #CASES: {}
+
+    ListCollections:
+      CASES:
+        'verb->ListCollections': 
+          'http://www.dlese.org/dds/services/ddsws1-1?verb=ListCollections'
+
+    #ListGradeRanges:
+      #CASES: {}
+      
+    #ListSubjects:
+      #CASES: {}
+
+    #ListResourceTypes:
+      #CASES: {}
+
+    #ListContentStandards:
+      #CASES: {}
+
+    #ListXmlFormats:
+      #CASES: {}
+
+    #UrlCheck:
+      #CASES: {}
+
+    #ServiceInfo:
+      #CASES: {}
+    

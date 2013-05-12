@@ -24,7 +24,11 @@ for f in sourcetest_files:
         testcases[fname] = yaml.load(f)
 
 def run_test(case, command, source, api, expected_url):
-    output = b.get_url(command, source, api)
+    try:
+        output = b.get_url(command, source, api)
+    except Exception as e:
+        print('EXCEPTION:  ', source, api, case, command, str(e))
+        return
     if expected_url == output:
         print('{:<20} {:<20} {:<20} ({:<15}) {:>{}}'.format(source, api, case, command, 
                                                      '[PASS]', abs(120-len(command))))

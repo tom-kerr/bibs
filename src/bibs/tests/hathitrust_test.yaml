@@ -1,0 +1,35 @@
+volumes_full:
+  
+  volumes:
+    parameters:
+      CASES: {
+        'isbn->1234567890': 
+          'http://catalog.hathitrust.org/api/volumes/full/isbn/1234567890.json',
+        }
+
+volumes_brief:
+  
+  volumes:
+    parameters:
+      CASES: {
+        'isbn->1234567890': 
+          'http://catalog.hathitrust.org/api/volumes/brief/isbn/1234567890.json',
+        }
+
+multi_volumes_full:
+  
+  volumes:
+    parameters:
+      CASES: {
+        'isbn->1234567890|oclc->123456': 
+          'http://catalog.hathitrust.org/api/volumes/full/json/isbn:1234567890|oclc:123456',
+        }
+
+multi_volumes_brief:
+  
+  volumes:
+    parameters:
+      CASES: {
+        'isbn->1234567890|oclc->123456': 
+          'http://catalog.hathitrust.org/api/volumes/brief/json/isbn:1234567890|oclc:123456',
+        }

@@ -450,8 +450,8 @@ class Bibs(object):
             syntax = self.get_syntax(self.options, path, 'option')            
             prefix = self.get_prefix(self.options, path)
                         
-            self.query_elements['option'].append({'entry': entry, 
-                                                  'prefix': prefix, 
+            self.query_elements['option'].append({'prefix': prefix, 
+                                                  'entry': entry, 
                                                   'value': value,
                                                   'syntax': syntax})
 
@@ -525,8 +525,26 @@ class Bibs(object):
                     else:
                         _path.pop(0)
                         return self.get_prefix(parameter[p], _path)
-        return prefix
+                else:
+                    for param in parameter:
+                        entry = {}
+                        if p == param:
+                            entry = parameter[p]
+                            break
+                        elif p in param:
+                            entry = param[p]
+                            break
 
+                    if 'prefix' in entry:
+                        return entry['prefix']
+                    else:
+                        _path.pop(0)
+                        if entry:
+                            return self.get_prefix(entry, _path)
+                        else:
+                            return self.get_prefix(parameter, _path)
+        return prefix
+        
 
     def add_argument(self, entry, prefix, value, syntax):
         if isinstance(entry, list):
