@@ -1,7 +1,10 @@
 ddsws:
   verbs:
-  #Search:
-    #CASES: {}
+
+    Search:
+      CASES: {
+        'verb->Search:q->ocean:s->0:n->10':
+          'http://www.dlese.org/dds/services/ddsws1-1?verb=Search&q=ocean&s=0&n=10'}
 
   #UserSearch:
     #CASES: {}

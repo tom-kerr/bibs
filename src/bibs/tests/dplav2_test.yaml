@@ -11,10 +11,8 @@ items:
       CASES: {
         'api_key->xxx:sourceResource->title->Macbeth':
           'http://api.dp.la/v2/items?api_key=xxx&sourceResource.title=Macbeth',
-
         'api_key->xxx:sourceResource->subject->subject->water':
           'http://api.dp.la/v2/items?api_key=xxx&sourceResource.subject=water',
-        
         'api_key->xxx:sourceResource->subject->name->water':
           'http://api.dp.la/v2/items?api_key=xxx&sourceResource.subject.name=water',
               
@@ -35,14 +33,12 @@ items:
         'api_key->xxx:sourceResource->title->Macbeth:facets->spatial->city->:facets->subject->_id->':
           'http://api.dp.la/v2/items?api_key=xxx&sourceResource.title=Macbeth&facets=sourceResource.spatial.city,sourceResource.subject.@id',
 
-
-        }
+          }
         
     sorting:
       CASES: {
         'api_key->xxx:sourceResource->title->Macbeth:sort_by->title->':
           'http://api.dp.la/v2/items?api_key=xxx&sourceResource.title=Macbeth&sort_by=sourceResource.title',
-
         'api_key->xxx:sourceResource->title->Macbeth:sort_order->asc->':
           'http://api.dp.la/v2/items?api_key=xxx&sourceResource.title=Macbeth&sort_order=asc',
 

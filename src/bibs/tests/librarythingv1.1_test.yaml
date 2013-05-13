@@ -7,13 +7,17 @@ rest:
         'apikey->xxx:ck->getwork:name->Macbeth': 
           'http://www.librarything.com/services/rest/1.1/?method=librarything.ck.getwork&apikey=xxx&name=Macbeth'
 
-    #getauthor
-    #CASES:
+    getauthor:
+      CASES:
+        'apikey->xxx:ck->getauthor:name->Gogol': 
+          'http://www.librarything.com/services/rest/1.1/?method=librarything.ck.getauthor&apikey=xxx&name=Gogol'
 
-  #local:
+  local:
 
-    #getvenue:
-    #  CASES:
+    getvenue:
+      CASES:
+        'apikey->xxx:local->getvenue:id->12345': 
+          'http://www.librarything.com/services/rest/1.1/?method=librarything.local.getvenue&apikey=xxx&id=12345'
 
     #getvenuesnear:
     #  CASES:
