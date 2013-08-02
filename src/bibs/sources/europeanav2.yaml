@@ -9,7 +9,7 @@ help: |
      search
 
    Documentation:
-     http://preview.europeana.eu/portal/api-introduction.html
+     http://europeana.eu/portal/api-introduction.html
 
    About:
      The Europeana Foundation is the operator of the 
@@ -46,7 +46,7 @@ help: |
               in their cultural heritage.
 
 url:
-  'http://preview.europeana.eu/api/v2'
+  'http://europeana.eu/api/v2'
   
 parameters:
 
