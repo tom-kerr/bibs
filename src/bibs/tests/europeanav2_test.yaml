@@ -5,12 +5,12 @@ search:
     query:
       CASES: {
         'wskey->xxx:query->who\:Gogol':
-          'http://preview.europeana.eu/api/v2/search.json?wskey=xxx&query=who%3AGogol'
+          'http://europeana.eu/api/v2/search.json?wskey=xxx&query=who%3AGogol'
           }
     
     options:
       CASES: {
         'wskey->xxx:query->who\:Gogol @callback->foo':
-          'http://preview.europeana.eu/api/v2/search.json?wskey=xxx&query=who%3AGogol&callback=foo'
+          'http://europeana.eu/api/v2/search.json?wskey=xxx&query=who%3AGogol&callback=foo'
         
           }
