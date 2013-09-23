@@ -1,7 +1,18 @@
 bibs
 ====
+
+
+Deprecated
+----------
+<h3> bibs is replaced by <a href='https://github.com/reklaklislaw/rest_easy'>'rest_easy'</a>
+</h3>
+
+
+
 Bibliographic Search
 ------------
+
+
 License: GPLv3
 
 An experimental python module with the goal of a shared syntax for querying RESTful Bibliographic APIs.
